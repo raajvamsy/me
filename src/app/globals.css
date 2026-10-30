@@ -981,3 +981,37 @@ a {
     font-size: 9.5vw;
   }
 }
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0;
+}
+
+.contact-links a {
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--ink);
+  font: 500 13px/1.2 var(--mono);
+}
+
+.contact-links a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .contact-links {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .contact-links a {
+    padding: 11px 2px;
+    font-size: 12px;
+    text-align: center;
+  }
+}

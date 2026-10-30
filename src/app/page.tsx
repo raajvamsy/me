@@ -1,5 +1,6 @@
 import { WorkGrid } from "@/components/work-grid";
 import { getEntries } from "@/lib/content";
+import { site } from "@/lib/site";
 
 const stats = [
   ["15/15", "lives where learned behaviour beat a newborn control, on one body"],
@@ -28,6 +29,12 @@ export default function Home() {
             I build developer platforms at work and learning systems on my own time. These pages
             show the tests and the failures along with the results.
           </p>
+        </div>
+        <div className="contact-links">
+          <a href={`mailto:${site.email}`}>Email</a>
+          <a href={site.github}>GitHub</a>
+          <a href={site.linkedin}>LinkedIn</a>
+          <a href="/resume.pdf">Resume</a>
         </div>
       </section>
 

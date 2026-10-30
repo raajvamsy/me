@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import Link from "next/link";
 import { getEntries } from "@/lib/content";
 import { site } from "@/lib/site";
@@ -48,17 +49,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link href="/research">Research</Link>
             {hasWriting && <Link href="/blog">Writing</Link>}
             {hasDocs && <Link href="/docs">Docs</Link>}
+            <a href="/resume.pdf">Resume</a>
           </div>
         </nav>
         <main>{children}</main>
         <footer className="site-footer">
           <div className="wrap">
             <span>
-              {site.email} · <a href={site.github}>GitHub</a> · <a href={site.linkedin}>LinkedIn</a> · <a href="/resume.pdf">Resume</a>
+              <a href={`mailto:${site.email}`}>{site.email}</a> · <a href={site.github}>GitHub</a> · <a href={site.linkedin}>LinkedIn</a> · <a href="/resume.pdf">Resume</a>
             </span>
             <span>Illustrations generated with AI. Results come from project logs.</span>
           </div>
         </footer>
+        <Analytics />
       </body>
     </html>
   );
