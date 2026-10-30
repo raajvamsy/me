@@ -270,9 +270,15 @@ a {
   height: 100%;
 }
 
+.big-metric {
+  container-type: inline-size;
+}
+
+/* Sized from the tile's width and the number's length, so a long value always fits. */
 .big-metric b {
   color: var(--accent);
-  font: 800 clamp(84px, 11vw, 150px)/0.9 var(--display);
+  font: 800 min(150px, calc(165cqi / var(--chars, 4)))/0.95 var(--display);
+  white-space: nowrap;
 }
 
 .big-metric span {
@@ -693,7 +699,7 @@ a {
 }
 
 .hero-page-title {
-  font-size: clamp(58px, 14vw, 190px) !important;
+  font-size: clamp(36px, 14vw, 190px) !important;
   text-wrap: balance;
 }
 
@@ -941,4 +947,37 @@ a {
   list-style: none;
   color: var(--muted);
   font: 500 12px/1.6 var(--mono);
+}
+
+@media (max-width: 640px) {
+  /* Comfortable tap targets for navigation and footer links. */
+  .site-nav a,
+  .site-footer a,
+  .label a {
+    display: inline-block;
+    padding-block: 6px;
+  }
+
+  .prose figure.compare > div[style] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .replay-controls span {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  /* Long single words in headings must still fit the narrowest phones. */
+  .entry-head h1 {
+    font-size: 12.5vw;
+  }
+
+  .stats-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stats-strip b {
+    font-size: 9.5vw;
+  }
 }

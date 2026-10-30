@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { hasMedia } from "@/components/media";
 import type { Entry } from "@/lib/content";
@@ -22,7 +23,7 @@ function Visual({ slug }: { slug: string }) {
   return (
     <div className="tile-visual">
       <div className="big-metric">
-        <b>{metric[0]}</b>
+        <b style={{ "--chars": [...metric[0]].length } as CSSProperties}>{metric[0]}</b>
         <span>{metric[1]}</span>
       </div>
     </div>

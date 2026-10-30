@@ -84,7 +84,10 @@ export function KabirReplay() {
         context.lineTo(width, y * sy);
         context.stroke();
       }
-      context.font = "600 12px monospace";
+      // The canvas scales down on phones, so its labels are drawn larger to stay readable.
+      const scale = width / (canvas.current?.clientWidth || width);
+      const label = Math.max(12, 10 * scale);
+      context.font = `600 ${label}px monospace`;
       context.textAlign = "center";
       for (const [place, [x, y]] of Object.entries(trace.places)) {
         const w = (place === "whiteboard" ? 4 : 2.6) * sx;
@@ -109,7 +112,7 @@ export function KabirReplay() {
       const clip = frame.c === "walking" ? "walk" : frame.c === "door" && frame.v ? "talk" : (AT_PLACE[frame.c] ?? "idle");
       const frames = sprites[clip];
       const image = frames[Math.floor(now / (clip === "sleep" ? 450 : clip === "walk" ? 90 : 160)) % frames.length];
-      const spriteHeight = HEIGHT[clip];
+      const spriteHeight = HEIGHT[clip] * Math.min(scale, 1.5);
       const top = shown[1] * sy - spriteHeight + 18;
       if (image.complete && image.naturalWidth) {
         const spriteWidth = (spriteHeight * image.naturalWidth) / image.naturalHeight;

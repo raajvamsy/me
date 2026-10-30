@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { hasMedia } from "@/components/media";
 import type { ResearchPage } from "@/lib/research";
@@ -57,7 +58,7 @@ export function ResearchGrid({ pages }: { pages: (ResearchPage & { href: string;
             ) : (
               <div className="tile-visual">
                 <div className="big-metric">
-                  <b>{page.metric}</b>
+                  <b style={{ "--chars": [...page.metric].length } as CSSProperties}>{page.metric}</b>
                   <span>{page.metricLabel}</span>
                 </div>
               </div>
