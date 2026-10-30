@@ -1,0 +1,48 @@
+---
+title: "The benchmarks and paper"
+summary: "A preprint draft that compares WaveMind with real baselines. It loses heavily on prediction and wins on forgetting."
+branch: "feat/wcm-cognitive-architecture"
+period: "Jun 2026"
+commits: 8
+order: 2
+metric: "16,763×"
+metricLabel: "tiny transformer's forgetting. WaveMind: 3.94×"
+imagePrompt: "Two glowing notebooks side by side: one retaining all its pages after a second language is written in, the other with its first pages dissolving away into dust."
+---
+
+## The question
+
+Measured fairly against real small models, what is this good for?
+
+## Next-token prediction
+
+Lower is better.
+
+| Predictor | Parameters | Perplexity |
+|---|---|---:|
+| Tiny transformer | About 250k | 52.3 |
+| Tiny GRU | About 100k | 93.1 |
+| KN-bigram | Counts | 145.4 |
+| WaveMind, best version | None | 161,345 |
+
+WaveMind loses by a huge margin, and its added modules barely changed this.
+
+## Learning a second language
+
+English perplexity before and after learning Japanese:
+
+| Model | Before | After | Forgetting |
+|---|---:|---:|---:|
+| Bigram | 199 | 201 | 1.01× |
+| KN-bigram | 61 | 81 | 1.33× |
+| WaveMind | 236,262 | 931,952 | 3.94× |
+| Tiny GRU | 120 | 1,000,000 | 8,353× |
+| Tiny transformer | 60 | 1,000,000 | 16,763× |
+
+The neural models collapse, while WaveMind degrades far less. Simple count models do better still, which keeps the claim modest.
+
+## Also in the paper
+
+Hierarchical wave clusters, capacity-limited working memory, intrinsic predictive learning, and cognitive psychology tests. On Saffran word segmentation it was at chance, 0% discrimination, against 100% for the tiny GRU, 94% for the tiny transformer and 62.5% for the bigram models.
+
+The paper is a draft and has not been published.

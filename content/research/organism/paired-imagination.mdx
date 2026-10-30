@@ -1,0 +1,55 @@
+---
+title: "One core, three bodies"
+summary: "A clean, body-independent core that learns a world model, imagines before acting, and is tested in three different bodies with frozen gates."
+branch: "organism-paired-imagination"
+period: "Oct 2026"
+commits: 20
+order: 4
+metric: "t 11.44"
+metricLabel: "learned beats newborn on Body B, 15 of 15 lives"
+imagePrompt: "One glowing artificial brain inside a glass sphere connected by light cables to three miniature robot bodies on separate plinths: a wheeled rover, a wall-mounted day-night device and a six-legged forager."
+---
+
+## The question
+
+One core, no scripted behaviour, three bodies: does it beat acting at random, never learning, and stopping learning halfway through life?
+
+## What the code holds
+
+| Module | Role |
+|---|---|
+| `boundary.py`, `constants.py` | The body boundary. A test forbids body imports or vocabulary in the core |
+| `model.py`, `memory.py` | Five small networks and episodic memory, with calibrated uncertainty |
+| `value.py`, `habit.py`, `need.py` | Need cost, TD value and a habit trained by learned advantage |
+| `imagination.py`, `choice.py` | Compares candidate plans by simulating them, and commits to one |
+| `episodic.py` | Fast recall of what really happened, combined with imagination by precision |
+| `rehearse.py` | Teaches the habit from imagined rehearsal and confirmed choices |
+| `genome.py` | Moves every constant into a genome passed at birth |
+
+The core is about 1,800 lines. The bodies are separate: A (arena), B (day-cycle device), C (cyclic forager), and two speaking bodies, S and V.
+
+## Results
+
+| Gate | A: arena | B: device | C: forager |
+|---|---|---|---|
+| Predictions improve | No (2 of 5) | Yes (4 of 5) | Yes (4 of 5) |
+| Learned beats newborn | No, t 0.73 | Yes, t 11.44 | Yes, t 1.79 |
+| Less out of range than controls | No | Yes, t 17.7 and 15.5 | No, t 1.52 |
+| Keeps adapting after a change | Not applicable | No, t −0.71 | No, t 1.46 |
+
+## What failed
+
+| Attempt | Lesson |
+|---|---|
+| Recency replay everywhere | Slow learners must interleave old and new |
+| Surprise-prioritised replay | It ruins a general learner's accuracy |
+| Distillation, early versions | Winner's curse and shared model error |
+| Real-episode lessons only | Safe, but too little evidence: 1 to 7 credible lessons per life in the arena |
+| Surprise-gated recency | Failed its frozen rule, t −0.32 in B and 1.46 in C. Removed |
+| Curiosity, two designs | Reverted |
+
+One real discovery came from replaying a failing life with read-only observers. After success, the habit's spread collapsed, so rehearsal stopped comparing options. The memory and the world model were both still right, which refuted my first explanation.
+
+## Where it stands
+
+The current work makes sleep a learned choice in place of a fixed replay schedule. Its runs were in progress when this page was written, so I don't report a result here.

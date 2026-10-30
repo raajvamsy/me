@@ -1,0 +1,20 @@
+---
+title: "Compression"
+summary: "From storing a file as an equation, which the counting argument rules out, to a coder that beats JPEG XL at effort 9 on my benchmarks."
+order: 4
+commits: 40
+metric: "−4.92%"
+metricLabel: "against JPEG XL e9, on 4K photos"
+stats:
+  - { value: "−4.92%", label: "against JPEG XL effort 9, on 4K photos" }
+  - { value: "−30.8%", label: "against x265 lossless, on one RGB clip" }
+  - { value: "25/27", label: "files over 10 KB where FunnelZip beat the best standard tool" }
+  - { value: "32/32", label: "files restored byte for byte in the lossless proof" }
+imagePrompt: "A long glowing equation unravelling into a stream of predictions, which funnels through nested cones into one small dense crystal."
+---
+
+## The path
+
+The first idea was wrong in general, and the counting argument proves it. One part of it held up, though: a predictor is an equation, and if it can guess the next bit you only store its surprise.
+
+The full tables are on the [compression work page](/work/compression).

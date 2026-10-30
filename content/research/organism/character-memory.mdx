@@ -1,0 +1,42 @@
+---
+title: "Character memory engine"
+summary: "An applied spin-off: keeping comic characters consistent on a frozen image model with no training at all. The first round's surgery added nothing measurable."
+branch: "feature/character-memory-engine"
+period: "Oct 2026"
+commits: 5
+order: 6
+metric: "12/24"
+metricLabel: "shots where it beat stock, so no gain yet"
+imagePrompt: "A single illustrated character reference sheet on a drafting table, with soft beams of light carrying its details into a row of comic panels, each showing the same character consistently in a different scene."
+---
+
+## The question
+
+Can a character stay consistent across shots using only inference-time changes on frozen FLUX.2 klein, with no LoRA and no trained weights?
+
+## What the code holds
+
+| File | Role |
+|---|---|
+| `surgery.py` | Biases attention to the reference sheet, per layer |
+| `identity.py`, `score.py` | Measures identity and props |
+| `run_story.py`, `run_duo.py` | Multi-panel and two-character stories |
+| `sprites.py`, `rig.py`, `poses.py` | Sprite sheets and a cut-out character rig |
+
+The organism's episodic memory chooses which surgery to keep, and MemoryLayer holds the props that a vision model checks on every image.
+
+## Round 1
+
+Three characters, 8 shots each.
+
+| Condition | Identity | Props | Prompt fit |
+|---|---:|---:|---:|
+| No reference | 0.410 | 0.909 | 0.231 |
+| Stock reference mode | 0.421 | 0.902 | 0.232 |
+| With surgery | 0.420 | 0.898 | 0.233 |
+
+**The surgery added nothing measurable.** It beat stock on 12 of 24 shots, which is what chance would give. By eye, the model's own reference mode is clearly more consistent than no reference, but these coarse metrics miss that. So the metrics were replaced with fine props and face crops.
+
+## Later rounds
+
+Rounds 2 and 3 added scene references, remembered story events and two-character panels, with finer scoring including a check for false positives. Sprite work found that drawing each frame changes the character, so body parts are now drawn once and moved by script. I don't have a summary result for these rounds to report yet.

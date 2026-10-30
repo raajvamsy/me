@@ -1,0 +1,58 @@
+---
+title: "Closing the loop"
+summary: "Moving from isolated abilities to one living organism. Science inside a body worked, and survival mostly did not follow."
+branch: "organism-closed-loop"
+period: "Sep–Oct 2026"
+commits: 133
+order: 3
+metric: "3.73×"
+metricLabel: "lifespan, and every life still ended in death"
+imagePrompt: "A small round robot in a sparse arena studying its own tracks through a magnifying lens, with translucent diagrams of cause and effect floating above it, while its energy and water gauges glow low."
+---
+
+## The question
+
+Can the abilities from the foundations run inside one creature, all the time, and actually help it stay alive?
+
+## What the code holds
+
+About 95 new pre-registered predictions and a large set of modules in `creature/`, including causal intervention, experiment selection, belief revision, competing theories, embodied science and self-rejection of hypotheses.
+
+## Milestones
+
+| Cards | Question | Outcome |
+|---|---|---|
+| M3–M6 | Planning and hidden regimes | M3b died, a diagnosed fix survived. M6a died on its registered metric |
+| O2 (19 cards) | Episodic capture, learning-driven exploration, knowledge reuse | Survived their batteries |
+| M9–M10 | Choosing informative experiments | Survived |
+| M11 (13 cards) | Causal intervention and counterfactuals | M11f died on calibration, and a symmetric validation card then survived |
+| M12 (16 cards) | Hypothesis competition, self-rejection, inventing new primitives | Survived |
+| M13 (14 cards) | Science inside the real body | See below |
+| M16–M18 | One continuous embodied life | Longer lives, with all of them ending in death |
+| M21 | Why does it die? | See below |
+| M33 | A belief-based planner in the arena | v4 was rejected under its own protocol |
+
+## M13: science in a real body
+
+| Card | Result |
+|---|---|
+| S1 | The embodied loop ran on every tick and survived all 4 claims |
+| S2 | Knowledge changed behaviour: error 0.036 against 4.342 without it, t 11.73 |
+| S3 | Knowledge survived a full reset from disk, t 18.18 |
+| S4c | The registered energy metric showed no benefit, t 0.17 |
+| S4c-R | A follow-up audit found the real benefit on water: margin 0.210 against 0.098, t 2.32 |
+
+Survival was 14 of 20 lives with science against 8 of 20 without, but that number was unregistered, so I reported it as such and didn't substitute it for the verdict.
+
+## Why it dies
+
+| Measure, 20 deaths | Result |
+|---|---|
+| Late checkpoints where survival was still possible | 394 of 414 (95%) |
+| Of those, where it could know this from its own senses | 202 of 394 (51%) |
+| Deaths that were energy deaths | 19 of 20 |
+| Most common action at those knowable points | Explore, 43%. Forage was only 18% |
+
+## What it taught
+
+An audit showed where the behaviour really came from: the creature learned rates and maps, but the strategy menu, planner rules and replan rules were written by me. That was the honest reason to stop adding parts and start again from a core with no hand-written behaviour.

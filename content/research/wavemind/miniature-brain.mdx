@@ -1,0 +1,33 @@
+---
+title: "The miniature brain"
+summary: "One wave circuit specialised into brain regions, with an 'honest mouth': an LLM speaks, and the brain checks every claim against what it knows."
+branch: "feat/miniature-brain"
+period: "Jun 2026"
+commits: 17
+order: 3
+metric: "0"
+metricLabel: "fabrications, by abstaining"
+imagePrompt: "A small transparent brain of twelve connected glowing regions on a plinth, checking a stream of text with a gate that lets true sentences through and stops false ones."
+---
+
+## The idea
+
+A region isn't a new algorithm. It's the same wave circuit, specialised by what it receives, which rhythm it runs in, where it projects, and one read-out.
+
+## Measured against a small LLM
+
+| Property | Miniature brain | Small LLM (measured where stated) |
+|---|---|---|
+| Exposures to learn a fact | 1 | Pretraining, or in context |
+| Retention across 5 domains | 100% | A tiny baseline kept 20% |
+| Novel facts | Refused 100% by construction | The measured 1.5B also refused 6 of 6, but this isn't guaranteed |
+| Transitive reasoning | 4 of 4, with a checkable proof | 4 of 4 in context, without a sound proof |
+| Computing formulas | 4 of 4, and it refused an untaught one | 2 of 4, and it made up a value |
+| Footprint | About 561 KB | Gigabytes |
+| Generative breadth | Narrow, fixed grammar | Vast |
+
+These are small hand-built tests, and the last row is the real trade-off.
+
+## The honest mouth
+
+The brain thinks, an LLM speaks, and `verify` checks each generated claim, so that only grounded claims ship. This idea carried over into MemoryLayer's verification.

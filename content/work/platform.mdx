@@ -1,0 +1,23 @@
+---
+title: "Platform work"
+kind: "Platform"
+summary: "Image-to-code, a performance diagnostics toolkit, a navigation migration, and an agentic pipeline from ticket to reproducible project."
+order: 5
+imagePrompt: "Four precise miniature machines on a dark workbench: one turning a screenshot into blueprints, one timing a phone app with a stopwatch, one rerouting navigation paths, and one turning a ticket into a working model."
+---
+
+## Image-to-code
+
+I originated and built a pipeline that turns a screenshot into platform markup. A fixed sequence of steps produces a layout plan, variables, design tokens and markup, then re-renders the result and compares it with the screenshot section by section. Teams went on to build on it and maintain their own versions.
+
+## Performance diagnostics
+
+A toolkit for diagnosing React Native app performance. A tracker captures runtime events, then a generator produces a report that syncs them with a screen recording, showing time to first interaction, API time and re-render cost for each page visit.
+
+## Expo Router migration
+
+I built the move from React Navigation to Expo Router across a code generator and runtime, verified by running real generated apps end to end. One bug is a good example: "can go back" was always true on the landing page. Three real fixes were needed before I found the root cause, a redirect stub registered as its own screen in the root drawer. Back navigation bubbles up through parent navigators, so it was found there.
+
+## Agentic engineering pipeline
+
+An end-to-end pipeline from an issue ticket to a buildable reproduction project, automating spec generation, codebase ingestion, test generation and code generation. It shortened turnaround on bugs and features noticeably, and the QA team has since adopted the approach.

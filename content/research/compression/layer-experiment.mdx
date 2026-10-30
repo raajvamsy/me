@@ -1,0 +1,23 @@
+---
+title: "Colour layer experiment"
+summary: "A short visual exploration of splitting images into channels and shade bands. It produced tools for looking, and no compression result."
+branch: "claude/vigilant-feynman-hect9m"
+period: "Oct 2026"
+commits: 8
+order: 3
+metric: "8"
+metricLabel: "commits of visual exploration"
+imagePrompt: "A photograph separated into floating translucent layers of red, green and blue, each further split into four shade bands, like stacked sheets of coloured glass."
+---
+
+## What it did
+
+Split images by dominant colour, then per channel, into white and black masks, and into four shade bands per channel, with a static page for mixing the layers back together.
+
+## Result
+
+This was for looking at structure directly, and there's no compression number from it. Related ideas tested on the FFIC branch cost 10–24%, so slicing images into layers turned out to be a poor route.
+
+## The layers
+
+<Compare images="layer-orig:Original|layer-red:Red|layer-green:Green|layer-blue:Blue" caption="One photo split into its three channels. Each channel also splits into 4 shade bands, and the bands sum back to that channel exactly." />

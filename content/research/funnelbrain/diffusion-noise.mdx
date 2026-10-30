@@ -1,0 +1,45 @@
+---
+title: "Reverse-diffusion teaching"
+summary: "Teaching the funnel brain to denoise, conditioned on prompt and image. The conclusion: polish cannot invent structure."
+branch: "feature/diffusion-noise-teach"
+period: "Sep 2026"
+commits: 2
+order: 5
+metric: "53"
+metricLabel: "files added by this branch"
+imagePrompt: "A noisy static-filled image slowly resolving under a small glowing funnel, where the fine texture sharpens while the overall shape stays a rough collage of cut pieces."
+---
+
+## The question
+
+Can the brain learn the reverse-diffusion step itself, without a frozen model?
+
+## What the code holds
+
+Input-conditioned residuals keyed on prompt, image signature and time step, `SceneProgram` priors, and a combination loop of RGB cuts and reverse steps until the result matches a target. About 3,400 lines were added, with tests for each piece.
+
+## Result
+
+Cut-based generation stays the primary generator, because polishing can't invent structure. It can clean up an image that already has a composition, but it can't supply one, which agrees with the wider conclusion of this line.
+
+## First look
+
+<Compare images="den-p0-c:Clean target|den-p0-r:Restored" caption="The easiest denoising test: the composition returns, with colour noise left in. Error 0.0108." />
+
+<Compare images="den-noise:From pure noise|den-cut:RGB cut|den-polish:Cut, then polished" caption="Generating from noise found no picture at all. The cut has the composition, and polishing it made it coarser, which matches the result above." />
+
+## The curriculum
+
+Each stage repeated teaching until its error passed a gate. Harder stages add more noise, and the hardest needed 5 attempts.
+
+<Compare images="dc-clean:Clean|dc-d0:D0, easy|dc-d1:D1, mid|dc-d2:D2, harder" caption="One sunset restored at each stage. Errors 0.0134, 0.0214 and 0.0554. The sun's position survives, while colour noise grows with difficulty." />
+
+<Compare images="ct-t:Target|ct-1:Round 1|ct-5:Round 5" caption="RGB cuts and reverse steps combined until the result matched a target. Error 0.0133 to 0.0118, so the shape is there from the start and later rounds change little." />
+
+## Generating without a target
+
+<Compare images="gi-1:Round 1|gi-3:Round 3|gi-5:Round 5" caption="Repeating reverse steps from noise until it passed. Error fell from 1.18 to 0.067 and the run was marked as a pass, but the image is still noise with a faint bright centre. The number passed and the picture didn't." />
+
+<Compare images="cp-0:RGB cut|cp-1:Round 1|cp-5:Round 5|cp-10:Round 10" caption="Polishing a good cut. Error rose every round, from 0.102 to 0.179, and the composition broke down into colour noise. This run failed." />
+
+<Compare images="sp-0:Scene prior|sp-1:Round 1|sp-f:Final" caption="Starting from a learned scene prior instead of noise. This gets the bright centre and, by the end, a horizon, so structure has to come from somewhere other than the reverse step." />

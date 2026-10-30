@@ -1,0 +1,33 @@
+---
+title: "FunnelBrain"
+kind: "Research"
+summary: "A long-running experiment in a non-LLM cognitive substrate, and what happened when I pointed it at language and images. Mostly a record of useful limits."
+order: 6
+imagePrompt: "A landscape of luminous funnels dug into a dark field, with small glowing balls rolling into them and splitting funnels forming new branches, representing concepts formed through exposure."
+proof: "The ideas behind FFIC came from this work."
+---
+
+## The question
+
+Can a system learn from raw exposure using field physics, with no LLM decoder? FunnelBrain turns bytes into points in a space, where repeated experience digs "funnels" that act as concepts. Sleep restructures them, splitting a funnel whose modes disagree and keeping new clusters only if they pay for themselves.
+
+## Language
+
+It recognises and recalls what it has lived through, but it doesn't generate. Allowing it to invent text produced word salad. Teaching it a real codebase's documentation made it replay fragments, not answer questions. That is a real limit of the approach, and it pushed me towards using it as memory and judgement beside a generator.
+
+## Images
+
+| Stage | What I tried | Result |
+|---|---|---|
+| Cellular automata | Learn rules that grow an image, layout first and then colour | Flower photo scored 0.974 against a 0.380 baseline, with visible block seams |
+| Drawing curriculum | Teach marks, then shapes, then portraits, locking each stage | A working teaching pipeline |
+| RGB generation | Compose new 64×64 images from taught photos, controlled by tags | Sunsets look good, flowers still look bad |
+| Inside SDXL | Feed the funnel field into a frozen model's cross-attention | Small effect, about 4% on one test, partly because the projections were random and frozen |
+
+**My conclusion:** on its own, this substrate produces collage at best. Real image generation needs a real generative prior, and the useful role here is memory and conditioning around a frozen model.
+
+## Where it went
+
+The most useful outcome was indirect. Nested funnels, where a child inherits from its parent, became the context hierarchy in [FFIC](/work/compression). The same discipline of testing ideas and logging failures carried into the [organism research](/work/organism).
+
+> The code is in a private repository, and it is available on request.

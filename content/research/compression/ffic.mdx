@@ -1,0 +1,45 @@
+---
+title: "FFIC"
+summary: "A lossless image coder built from FunnelBrain's ideas, tested on photos, elevation data, video and whole folders. Slow, and honest about where it loses."
+branch: "claude/epic-volta-yj47w6"
+period: "Oct 2026"
+commits: 31
+order: 2
+metric: "−2.17%"
+metricLabel: "archive preset, against JPEG XL e9"
+imagePrompt: "A photograph of a golden retriever dissolving into glowing pixels, each pixel being guessed by a team of small predictors, with the leftover surprise compressed into a tiny bright crystal."
+---
+
+## What the code holds
+
+`ffic.c` is the coder and decoder, and `ffic.py` the command-line tool. There are self-tests, a round-trip check, and an experiment log with every attempt recorded.
+
+## Ideas tested
+
+| Idea | Outcome |
+|---|---|
+| Nested funnels, colour order | Kept. −1.46% against JPEG XL e9 |
+| Video by stacking frames | Kept. Beats FFV1, x264 and x265 on 3 RGB clips |
+| Archive preset with reversible tricks | Kept. −2.17%, and −0.57% on the Kodak set that the `max` preset loses |
+| More funnels and depth | Dropped. 0.15–0.59% bigger, since each funnel learns from fewer pixels |
+| Bit-plane slices, height slabs | Dropped. +4.7% to +24% |
+| Waves all the way down | Dropped. +149% |
+| Parallel worlds | Strongest on paper at −2.52%, not built, because decoding would be about 5× slower |
+
+## Any file as an image
+
+| File | Best other tool | Result |
+|---|---|---:|
+| Elevation grid | bzip2 | −39.9% |
+| Fixed sensor records | xz | −22.5% |
+| JPEG | bzip2 | +4.0% |
+| Speech | FLAC | +29.3% |
+| Program binary | xz | +119% |
+| C source | bzip2 | +188% |
+| JSON log | xz | +805% |
+
+It wins on smooth numbers in a grid, and loses badly on symbols.
+
+## Limits
+
+Speed is the main weakness, since the decoder runs the same model as the encoder. In native YUV, a fast pan is 7% worse than x265, because motion search isn't built. It hasn't been compared with cmix, paq8px or GraLIC.

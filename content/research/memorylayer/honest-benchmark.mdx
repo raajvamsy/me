@@ -1,0 +1,28 @@
+---
+title: "The honest benchmark"
+summary: "A benchmark that looked good turned out to be a strawman. Fixing it found a real bug and changed the product."
+branch: "feat/fs-tools-honest-benchmark"
+period: "May 2026"
+order: 1
+metric: "3"
+metricLabel: "branches of benchmark corrections"
+imagePrompt: "A laboratory scale with a bar chart being taken apart by a small robot, which rebuilds it with real measured weights in place of painted ones."
+---
+
+## The problem
+
+An early token-efficiency showcase compared memory against an unfairly weak alternative.
+
+## What changed across the branches
+
+| Branch | Change |
+|---|---|
+| `feat/fs-tools-honest-benchmark` | Removed the strawman, gave the baseline real filesystem tools and ran a real loop |
+| `debug/memory-cost-postmortem` | A post-mortem. `code_search` now returns content inline by default |
+| `fix/benchmark-polish` | Found a `.tsx` parser bug, moved to real token counts |
+| `feat/graph-and-embed-cache` | Ran an N=3 stability benchmark for defensible final numbers |
+| `feat/literal-gap-and-port` | Dropped the synthetic showcase and closed the literal-question gap with 3 code tools |
+
+## What it taught
+
+Making the comparison fair found product bugs the flattering version had hidden. All of these were merged, and I'll publish the current numbers with the next version.

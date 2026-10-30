@@ -1,0 +1,58 @@
+---
+title: "Five ways of finding nothing"
+summary: "Five separate investigations into an existing trading bot's logic. The best setup hit 61.2% in development and 44.4% on untouched data, which is why the method matters."
+branch: "main (binance-ai)"
+period: "Jul 2026"
+commits: 25
+order: 1
+metric: "61→44%"
+metricLabel: "best development result, on untouched data"
+imagePrompt: "Two identical precise gauges side by side on a dark bench: the left, labelled only by a glowing sealed development chamber, reads high, and the right, attached to a sealed untouched vault, has dropped far below the middle mark. Keep both gauges in the middle third of the image."
+---
+
+## The question
+
+Does the logic in an existing trading bot have a real directional edge? The risk with searching is that trying enough configurations always finds one that looks good by chance.
+
+## The parameter sweep
+
+9 configurations across 3 rule variants and 3 direction filters, on 360 days of data. Three 90-day segments were used for development, and the last one stayed untouched until the end.
+
+| Horizon | Winning configuration | Development | **Untouched data** |
+|---|---|---:|---:|
+| 15 min | Strict, short only | 56.0% | 46.9% |
+| 1 hour | Strict, short only | 55.6% | 50.6% |
+| 4 hours | Strict, long only | 58.7% | 50.0% |
+| 1 day | Loose trend, short only | 61.2% | 44.4% |
+
+Every winner fell to a coin flip or worse. The best-looking result had the worst collapse, and a less careful test would have stopped at the development column.
+
+## Adding a reasoning layer
+
+The second round wired in six ideas together, including order-flow features, a formal pre-trade gate, contradiction detection and confidence-based sizing, with 301 tests.
+
+| Horizon | Directional accuracy | Pre-trade gate passed |
+|---|---:|---:|
+| 15 min | 49.3% | 0 of 134 |
+| 1 hour | 51.5% | 1 of 167 |
+| 4 hours | 48.5% | 1 of 167 |
+| 1 day | 47.3% | 1 of 167 |
+
+The accuracy didn't move. The risk gate stayed safe on all 168 checks at every horizon, so the reasoning machinery behaved correctly, but it had no edge to work with.
+
+## Feeding it more indicators
+
+The third round asked whether more technical analysis would help. It ran 8 feature sets through the same split on 5 symbols, and each horizon's winner got one run on the untouched data.
+
+| Horizon | Winner | Development | **Untouched data** |
+|---|---|---:|---:|
+| 15 min | Order flow added | 54.7% | 53.1% |
+| 1 hour | Original baseline | 52.1% | 52.7% |
+| 4 hours | Trend strength added | 50.9% | 47.6% |
+| 1 day | Volatility added | 50.0% | 46.6% |
+
+Two held up and two fell below 50%, and the two that held are still close to a coin flip. Using every indicator at once never ranked first on any horizon, and nothing reliably beat the smallest original set.
+
+## What it taught
+
+The result is the finding: five independent methods agreed there was no validated edge in this feature family, while the reasoning machinery behaved correctly. The same rule carried into [the next repository](/research/trading/binance-v2): explore on development data, then give anything chosen there one shot on data never looked at.

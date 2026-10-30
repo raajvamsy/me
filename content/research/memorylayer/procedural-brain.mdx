@@ -1,0 +1,15 @@
+---
+title: "Procedural memory"
+summary: "Teaching an agent's memory to run procedures and formulas safely, and not just recall facts."
+branch: "feat/procedural-brain-wiring"
+period: "Jun 2026"
+commits: 1
+order: 3
+metric: "1"
+metricLabel: "focused commit"
+imagePrompt: "A glowing memory crystal with a small mechanical calculating engine inside it, running a formula on a card while a safety cage surrounds the mechanism."
+---
+
+## The change
+
+Exposes the procedural and math brain over IPC through a safe `teach_formula`, so a taught procedure can be run on request and an untaught one is refused. It comes from the miniature brain's result that computing with taught formulas was reliable, while a small LLM made up values.

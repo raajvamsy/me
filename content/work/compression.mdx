@@ -1,0 +1,68 @@
+---
+title: "FFIC and FunnelZip"
+kind: "Research"
+summary: "A lossless image coder that produces smaller files than JPEG XL at effort 9 on my benchmarks, and a general compressor that beat the best standard tool on 25 of 27 test files over 10 KB. Both are slow, and the limits are listed below."
+order: 2
+imagePrompt: "A photograph dissolving into a precise grid of luminous pixels, which funnels down through nested glowing cones into a small dense crystal, showing an image being losslessly compressed."
+proof: "4.92% smaller than JPEG XL e9 on 4K photos, 5–6.7% on 16-bit elevation data. All benchmarked files decoded exactly."
+---
+
+## The question
+
+This started with a question that turned out to be wrong: can you store a file as an equation that prints it back? Loops, seeds and trees of equations never compress in general, which the counting argument guarantees. But one part of the idea held up: prediction is an equation. If a model can guess the next bit, you only store its surprise.
+
+So I built predictors. **FunnelZip** mixes many models for any file. **FFIC** applies ideas from my FunnelBrain research to images.
+
+## How FFIC works
+
+1. Green is coded first, then red, then blue, so later colours can read earlier ones.
+2. Each pixel is guessed by a team: simple predictors, plus learned "funnels" nested by how busy the area is, its edge direction and its brightness. A new funnel starts from its parent's weights.
+3. A referee blends the team according to who has been right nearby.
+4. The leftover is coded as a few yes/no questions, and an arithmetic coder writes the bits.
+5. The decoder runs the identical model. Each file carries a checksum of its pixels.
+
+## FFIC results
+
+| Test | Best other tool | FFIC | Difference |
+|---|---|---:|---:|
+| 20 photos (12 Pexels, 8 Kodak) | JPEG XL e9: 10,481,322 B | 10,327,954 B | −1.46% |
+| 4 × 4K photos | JPEG XL e9: 25,159,623 B | 23,922,822 B | −4.92% |
+| 16-bit elevation, Grand Canyon | JPEG XL e9: 3,929,750 B | 3,732,532 B | −5.0% |
+| 16-bit elevation, French Alps | JPEG XL e9: 5,246,884 B | 4,895,779 B | −6.7% |
+| 16-bit elevation, Swiss Alps | JPEG XL e9: 5,090,414 B | 4,775,794 B | −6.2% |
+| Lossless RGB video, akiyo | x265: 1,569,264 B | 1,085,865 B | −30.8% |
+| Lossless RGB video, foreman | FFV1: 2,477,057 B | 2,236,692 B | −9.7% |
+| Lossless RGB video, mobile | FFV1: 4,026,264 B | 3,724,511 B | −7.5% |
+
+## Where it loses
+
+| Test | Result |
+|---|---|
+| 8 Kodak film scans, `max` preset | About 1.3% bigger than JPEG XL. The slower `archive` preset is 0.57% smaller |
+| Native YUV video, fast pan | 7.0% bigger than x265 lossless |
+| Speech, stored as an image | 29.3% bigger than FLAC |
+| Text and code, stored as an image | 188–805% bigger than xz or bzip2 |
+
+**Speed is the main weakness.** A 4K photo takes about 2–3.5 minutes each way with the `max` preset. JPEG XL takes 13–24 seconds to encode and about a second to decode. FFIC's decoder has to run the same model as its encoder.
+
+The video clips were filmed in YUV and converted to RGB for this test, and native YUV results are weaker, as the table above shows. The 4K crops come from camera JPEGs and keep their 8×8 block structure, which may favour FFIC. I have not compared it with cmix, paq8px or GraLIC, so this is not a claim to be the best compressor that exists.
+
+## FunnelZip results
+
+FunnelZip listens to each file and picks its models, including dedicated paths for PNG and JPEG. Compared with the best of gzip, bzip2, xz, zstd, brotli, FLAC, PNG and WebP lossless:
+
+| File | Best other tool | FunnelZip | Difference |
+|---|---|---:|---:|
+| `system_sounds.wav` | FLAC −12: 139,535 B | 76,721 B | −45.0% |
+| `sensor.csv` | xz −9e: 6,564 B | 3,137 B | −52.2% |
+| `server.log` | bzip2 −9: 176,472 B | 121,034 B | −31.4% |
+| Landscape photo, raw RGB | WebP lossless: 119,562 B | 91,442 B | −23.5% |
+| Python source, 2 MB | brotli −11: 409,022 B | 361,854 B | −11.5% |
+
+It beat the best tool on 25 of 27 files over 10 KB. A separate proof compresses and restores all 32 test files and compares every byte. It runs at about 0.3 MB/s to compress and 0.6 MB/s to decompress on the benchmark set. On JPEG files, JPEG XL's own recompression still beats it on a 4K photo.
+
+## What failed
+
+Most ideas did. Slicing brightness into layers cost 10–24%. Waves all the way down cost 149%. Oblique 2-D waves gained nothing. Each is logged with its numbers, because knowing why an appealing idea doesn't work was the most useful part of the project.
+
+> Code and every experiment log are available on request.

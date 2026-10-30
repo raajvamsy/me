@@ -1,0 +1,22 @@
+---
+title: "FunnelBrain"
+summary: "A non-LLM substrate tried on language, then pushed through cellular automata, drawing, RGB generation and diffusion. Its limits became its most useful result."
+order: 2
+commits: 98
+metric: "0.974"
+metricLabel: "flower reconstruction, against a 0.380 baseline"
+stats:
+  - { value: "98", label: "commits across all branches" }
+  - { value: "0.974", label: "flower reconstruction score, baseline 0.380" }
+  - { value: "~4%", label: "effect on the frozen SDXL signature test" }
+  - { value: "6", label: "branches" }
+imagePrompt: "A dark landscape of luminous funnels dug into a field, with small glowing balls rolling into them, some funnels splitting into two and some nesting inside larger ones."
+---
+
+## The idea
+
+Bytes become points in a space. Repeated experience digs funnels there, and each funnel acts as a concept. Prediction error deepens it, and sleep splits a funnel whose modes disagree, keeping a new cluster only if it pays for itself.
+
+## The overall conclusion
+
+On its own, this substrate produces collage at best. Real generation needs a real generative prior, and the useful role here is memory and conditioning around a frozen model. Its nested funnels went on to power [FFIC](/research/compression/ffic).

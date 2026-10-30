@@ -1,0 +1,35 @@
+---
+title: "WaveLM"
+summary: "Can a language model be built with no weights? Each attempt found which part of a transformer truly needs backpropagation."
+branch: "experiment/wcm-core-llm"
+period: "Jun 2026"
+commits: 18
+order: 4
+metric: "18"
+metricLabel: "commits testing one question"
+imagePrompt: "An exploded diagram of a transformer whose parts are being replaced one by one with wave-based mechanical analogues, with one part left glowing as the one that cannot be replaced."
+---
+
+## The question
+
+Which component of a transformer forces backpropagation? The design doc maps each one to a training-free analogue:
+
+| Transformer part | Wave analogue |
+|---|---|
+| Embedding | Wave encoding by stable hash |
+| Position | Phase clock and reservoir state |
+| Self-attention | Cluster resonance (Hopfield retrieval) |
+| Feed-forward | Hyperdimensional bind and cleanup |
+| Output head | Transition model and invertible decode |
+| Backprop objective | Predict, absorb, compare, update |
+
+## The attempts
+
+1. **WaveLM-0.** A minimal generative model on the core, with a perplexity harness.
+2. **WaveLM-1.** Training-free Hopfield attention, compared with the miniature brain on identical probes.
+3. **WaveLM-1-LLM.** A frozen Qwen-0.5B embedding backbone.
+4. **WCMRAG.** Wave retrieval feeding a frozen LLM reader.
+
+## What it taught
+
+The design treated failure as a result: if these didn't work, generation forces parametric learning at some point. The direction that survived was the last one, wave retrieval with a frozen reader. That is a useful memory system, and not a replacement for a language model.

@@ -1,0 +1,55 @@
+---
+title: "Cellular automata and drawing"
+summary: "Could it draw? The first result was negative: the automaton steps hurt. Then splitting layout from colour gave the first recognisable photo."
+branch: "funnel-brain/ca-mix"
+period: "Aug 2026"
+commits: 41
+order: 3
+metric: "12×"
+metricLabel: "faster than joint colour search"
+imagePrompt: "A photograph of a white flower emerging cell by cell from a cellular automaton grid, drawn in two passes: a grey structural layer below and colour flowing onto it above."
+---
+
+## The question
+
+The brain can't speak in fluent sentences. Could it instead grow images by learning a small genome for a cellular automaton?
+
+## The negative result
+
+Sweeping genome size against automaton steps on the target letter "A", with 600 trials each:
+
+| Genome bytes | 0 steps | 1 step | 2 steps | 4 steps | 6 steps |
+|---:|---:|---:|---:|---:|---:|
+| 16 | 0.531 | 0.766 | 0.750 | 0.703 | 0.688 |
+| 32 | 0.656 | 0.750 | 0.719 | 0.688 | 0.719 |
+| 64 | 0.781 | 0.750 | 0.719 | 0.703 | 0.656 |
+| 96 | 0.812 | 0.734 | 0.734 | 0.734 | 0.734 |
+
+With a large enough genome, zero steps won, which is simply painting pixels directly. The growth story didn't hold as first imagined. Two earlier claims in the notes were also corrected: raw motor bytes don't work as a genome, and the first grid embedding was worse than the original.
+
+## What worked
+
+| Step | Result |
+|---|---|
+| Multi-state automata | Lifted the ceiling |
+| Patch grid, layout and colour searched together | Worked, but slowly |
+| Two stages: grey layout, then a direct colour lookup | Flower photo scored 0.974 against a 0.380 baseline, about 12× faster |
+| Decomposing complex shapes into patches | A star became recognisable where one canvas gave a blob |
+
+Block seams remain visible, and a brightness-keyed colour table can't separate regions of equal brightness with different hues. Recombining objects, recolouring and grafting regions all work.
+
+## What it grows
+
+This image is a fresh rerun of the branch's two-stage code, made for this page because the original runs saved no pictures. It used a different flower photo, so its score isn't the 0.974 above.
+
+<Compare images="flowers-photo:Original photo|ca-flowers-target:Target, reduced colours|ca-flowers-grown:Grown by the automaton" caption="32×32 patches of 4×4 cells, 300 trials each. Score 0.782 against a 0.314 baseline. The flowers read clearly, and the block seams are visible in the leaves and at the edges." />
+
+<Compare images="rc-b:Learned|rc-a:White recoloured yellow" caption="Selective recolouring, also rerun for this page. Only the white cells change, including the highlights in the flower at the bottom, and the rest of the image stays the same." />
+
+<Compare images="cm-a:Learned image A|cm-b:Learned image B|cm-g:A with part of B regrown" caption="Grafting between two small synthetic test images. The top-left quadrant is regrown from B's stored rules, not pasted as pixels. Rerun for this page." />
+
+<Compare images="cm-st:Star target|cm-sg:Grown at 16×16" caption="A limit: in this rerun the star scored 0.875 but doesn't read as a star. Scores here can look better than the picture." />
+
+## Drawing
+
+A curriculum teaches from a mark, to labelled shapes, to depth, to portraits from photos, with each stage locked and checkpoints ranked by progress and not raw score.

@@ -1,0 +1,77 @@
+---
+title: "How Kabir learned his office"
+summary: "A character whose body learns what his world does from experience. Watch one recorded life, and see exactly which parts are learned and which are still hand-written."
+branch: "no branch yet"
+period: "Oct 2026"
+order: 1
+metric: "96% → 0%"
+metricLabel: "needs in range with the hand-written steering, then without it"
+imagePrompt: "A close view of a character at a whiteboard imagining two translucent future paths, one toward the door and one staying, with a gate behind him blocking a floating false memory."
+---
+
+## Watch him live
+
+<KabirReplay />
+
+This is 1,800 minutes of one life, following a 1,500-minute childhood. The language model is off, so nothing here is written or decided by an LLM.
+
+## Is this the pure creature?
+
+Mostly, but not purely. The learning is real, and the steering around it is partly hand-written. The clearest evidence is what happens when that steering is removed:
+
+| Same body, same seed, 1,800 minutes | Needs in range | Time walking | Reached desk and fridge |
+|---|---:|---:|---|
+| Core with the hand-written steering (shown above) | 96.4% | 49% | Yes |
+| Core choosing every action alone | 0% | 71% | No |
+
+Alone, his work and social needs fell to zero and stayed there. This is one seed on the current core, so it's a clear signal and not a measured rate. On this body, the competence you see depends on the steering.
+
+## How he learned where to go
+
+Nobody told him what a fridge does. The core never sees the words fridge, couch or energy. It gets 8 unlabelled numbers, 3 needs with an acceptable range, and 5 actions that are just numbered options.
+
+1. **He lives.** Early on, he acts on an untrained habit, which takes him to different places.
+2. **He predicts.** After every minute, a forward model compares what it expected with what happened, and learns from the difference. This is how "action 1, then standing there for a while, makes need 0 rise" gets learned.
+3. **He imagines.** Every 40 minutes, for each of the 5 options, he simulates heading there and staying for 36 minutes, across 16 imagined versions of the future. He picks the option with the lowest expected need cost.
+4. **He rehearses.** After 500 minutes, imagined comparisons from real remembered moments also train his habit. Real outcomes don't train it directly, because that taught him superstitions in earlier tests.
+
+So the link between the fridge and energy is learned from his own life. Going to the fridge when tired is never written anywhere.
+
+## What's learned and what's written
+
+| Part | Who decides it |
+|---|---|
+| What each place does to his needs, as he understands it | **Learned** from experience |
+| Which place he picks each time | **Learned** model, scored by imagination |
+| His habit | **Learned** through rehearsal |
+| How the world works: walking speed, decay, what each place gives | Written. It's his world |
+| Having 3 needs and their acceptable range | Written. It's what he is |
+| Considering a new choice every 40 minutes | **Written steering** |
+| Stopping once a need is "comfortably back", with one threshold per place | **Written steering** |
+| Giving up on a plan after 60 minutes | **Written steering** |
+| Going to the door when a visitor arrives | **Written steering** |
+| Only comparing "go there and stay" as plans | **Written steering** |
+
+In this recording, he was following one of these plans for 65% of the time, and his habit moved him the rest of the time. His social need still dropped as low as 0.22, below the 0.35 limit.
+
+## What this recording is
+
+The simulation runs in Python, so a static page can't run it live. This is a real run, recorded and played back, which means you can't change what he does. I set when the visitor comes, and the drink. His log wording is written from the recorded state changes.
+
+## With language and memory on
+
+The full version adds a language model that speaks for him, plus memory and name recognition. These results are from an earlier version of the core, whose saved life no longer loads:
+
+| Test | Result |
+|---|---|
+| Needs in range, random walk | 0.000 |
+| Needs in range, habit alone | 0.000 |
+| Needs in range, habit and imagined plans | 0.974 (paired t 47.8, 6 seeds × 2,500 minutes) |
+| Returning visitor's name | Recognised across a restart |
+| False memory: "pizza you brought yesterday" | Held back by the grounding gate |
+
+The first gate let a false memory through by citing the visitor's own question. That was fixed and pinned with a test. Those imagined plans use the same written steering described above.
+
+## Limits
+
+Thinking takes 25–45 seconds on a laptop. Familiarity recognises exact words but not near-spellings. The next real step is making the core's own choices work in this body, so the steering can be removed.

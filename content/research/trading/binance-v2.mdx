@@ -1,0 +1,39 @@
+---
+title: "Scanner and structure tests"
+summary: "Two strategies tested with frozen rules and realistic costs. Neither has an edge, and costs alone explain why the scanner loses."
+branch: "main (binance-v2)"
+period: "Oct 2026"
+commits: 5
+order: 2
+metric: "−0.66R"
+metricLabel: "scanner average after costs"
+imagePrompt: "Two trading strategies as small machines on a test bench with realistic friction applied, each output measured on a precise gauge that sits just below the break-even mark."
+---
+
+## Scalper scanner
+
+Replayed exactly as live, one 3-minute candle at a time, with fills on 1-minute candles and realistic fees and slippage.
+
+| Measure | Result |
+|---|---:|
+| Average before costs | −0.05R |
+| Average after costs | −0.66R (95% CI −0.69 to −0.63) |
+| Random entries, same risk | −0.88R |
+| With extra quality gates | −0.78R |
+| Blocked by those gates | −0.64R |
+
+The signals have no direction before costs. The median stop is so tight that costs take about 0.85R per trade. The quality gates, added from one screenshot, made things worse.
+
+## Sweep, shift and gap
+
+Rules were written before any code ran on any data.
+
+| Bar | Result |
+|---|---|
+| Sample of at least 100 | Met |
+| Lower bound above 0 | Not met, −0.40 |
+| Above the random baseline | Not met |
+
+**Verdict: no validated edge.** The 15-minute version was the least bad, consistent with fees mattering less on wider stops. As registered, there was no more tuning on this data.
+
+Survivorship is a known caveat, because the pairs are today's most liquid.

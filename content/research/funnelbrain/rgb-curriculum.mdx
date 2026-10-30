@@ -1,0 +1,65 @@
+---
+title: "RGB and the SDXL integration"
+summary: "New images composed from taught photos, then the funnel field spliced into a frozen diffusion model's attention. Small effects, and a clear reason why."
+branch: "feature/rgb-checkpoint-curriculum"
+period: "Aug 2026"
+commits: 16
+order: 4
+metric: "~4%"
+metricLabel: "effect on the signature test"
+imagePrompt: "Cutaway of a large frozen crystalline diffusion machine, where a small living field of glowing funnels has been spliced into its attention layers, sending orange threads into the frozen structure."
+---
+
+## RGB curriculum
+
+Checkpoints teach pixel fill, leaf patches, segments, per-portrait layouts and shared layouts. Reference photos are used only in teaching, and generation samples a layout and then fills each region. Sunsets look good at 64×64, while flowers still look bad.
+
+## What it drew
+
+Reference photos are used only while teaching. These pairs show the target next to the drawing, so they show how well it holds what it was taught.
+
+<Compare images="s64-37592586-t:Target|s64-37592586-d:What it drew" caption="Sunset over water at 64×64, drawn from the taught layout." />
+
+<Compare images="s64-37632334-t:Target|s64-37632334-d:What it drew" caption="A second taught sunset at 64×64." />
+
+<Compare images="s64-17491528-t:Target|s64-17491528-d:What it drew" caption="A red sun with its reflection and dark silhouettes." />
+
+<Compare images="s64-36878679-t:Target|s64-36878679-d:What it drew" caption="A layered red sky over water." />
+
+<Compare images="sunset-01:Seed 101|sunset-03:Seed 303|sunset-05:Seed 505" caption="Sunsets sampled with different seeds. They vary, but they stay close to the taught photos, so this is recombination and not new invention." />
+
+<Compare images="sunset-02:Seed 202|sunset-04:Seed 404|sunset-06:Seed 606|sunset-08:Seed 808" caption="More samples from the same run. Some join pieces from different photos, and the seams show." />
+
+<Compare images="probe-anchor:Portrait, anchor method|probe-cp1:Portrait, early checkpoint" caption="The same approach on portraits. Faces need structure that patch recombination doesn't hold, so these fail." />
+
+## Inside the model
+
+The design rule was that it can't be a wrapper. If `pipe(prompt)` still works with the field detached, it doesn't count. So each cross-attention block in SDXL-Lightning takes its keys and values from the live field, with convolution, self-attention and the VAE frozen. Each denoising step both reads from the field and writes to it.
+
+`funnel-english-curriculum` points at the same work, with no difference between the two branches at their tips.
+
+## Results
+
+| Test | Result |
+|---|---|
+| Signatures | About 4% change |
+| Hills and ocean, taught then combined | With the field off, images matched the untaught baseline. With it on, a path appeared in the scene |
+| Field growth in that run | 0 to 16 funnels and 2 meta-funnels across 8 teach passes |
+
+The honest caveat is that SDXL can already combine hills and ocean from the prompt alone. The field's measurable contribution was a detail, not the concept.
+
+<Compare images="hills-base:Untaught baseline|hills-off:Taught, field off|hills-live:Taught, field on" caption="Hills and ocean, same seed. The path in the last image is the field's visible contribution." />
+
+The signature test taught examples of one handwriting font, then gave it a new signature to restyle.
+
+![Field off.](/img/research/organism/evidence/sig-ablated.webp)
+
+![Field on. The output changes by about 4%, and neither version keeps the words from the input.](/img/research/organism/evidence/sig-live.webp)
+
+<Compare images="core-teach:During teaching|core-empty:Empty field|core-off:Field off|core-live:Field on" caption="A city street on the SDXL base model, showing the field's effect on a full scene. Keys come from the field, while the prompt and model do most of the work." />
+
+<Compare images="gh-before:Before the fix|gh-off:After, field off|gh-live:After, field on" caption="A bug these images exposed. A custom denoising loop silently cancelled a style LoRA. One change from inference_mode to no_grad brought the style back, and also revealed a real field effect." />
+
+## Why the effect is small
+
+A later audit of `funnel_unet.py` found the projections from the field into the model start random and are never trained. The field chooses which keys go in, but they arrive through fixed random transformations, so they can't carry a specific identity.

@@ -1,0 +1,74 @@
+---
+title: "Teaching it to see"
+summary: "Could a creature that holds knowledge in a physical field be taught real photos, and redraw them from memory? It could: every taught box came back right on all 5 photos, though 2 of them were a single flat box. Breeding didn't help."
+branch: "main"
+period: "Aug 2026"
+order: 2
+metric: "285/285"
+metricLabel: "taught boxes redrawn correctly on 3 detailed photos"
+imagePrompt: "A small round robot sitting at a desk, carefully redrawing a photograph of a red apple from memory as a mosaic of square tiles, where busy parts of the picture are split into smaller tiles and flat parts stay large. Keep the robot and the mosaic in the middle third of the image."
+---
+
+## The question
+
+Could the creature store a picture in its field and redraw it, with a teacher writing only what it could later decode for itself? Every rendered picture is a live decode from the field, and nothing is pasted in.
+
+## The series
+
+| Card | Test | Result |
+|---|---|---|
+| V2 | Teach one shape and colour, then remove the teacher | Survived. It kept RED CIRCLE over a distractor |
+| V3 | Breed on top of that taught memory | Died. Inherited memory became meaningless, because each creature had its own random projection |
+| V3F | Give a classroom one shared projection | Survived. V3's hypothesis then held |
+| V4 | Teach a 2×2 picture, teaching against breeding | Teaching worked. **Breeding was no faster, and slower at fine granularity** |
+| V5 | Real photos, with tiles splitting where the picture is busy | **Survived. Every box correct on 5 photos** |
+| V6 | Do several examples form a general category? | Died on its claim: it tied the best example. It did reject outliers, at the cost of rare detail |
+| V7 | Continuous grayscale in place of 5 colours | Survived at 16×16, and needed a fix to go higher |
+
+## Real photos
+
+Each photo was reduced to the creature's five colour concepts and taught box by box. The drawing comes from the creature's own memory, so its target is the taught version and not the photo. That reduction loses a lot: the apple's dark background became green, because green was the nearest colour it had.
+
+<Compare images="flowers-photo:Original photo|flowers-taught:What it was taught|flowers-drawn:What it drew" caption="Colourful flowers: 163 of 163 boxes correct." />
+
+<Compare images="apple-photo:Original photo|apple-taught:What it was taught|apple-drawn:What it drew" caption="Red apple: 31 of 31 boxes correct. The first run scored 21 of 31, which exposed the merging bug below." />
+
+<Compare images="rainbow-taught:What it was taught|rainbow-drawn:What it drew" caption="Rainbow: 91 of 91 boxes correct. The original photo wasn't saved with this run." />
+
+The other two photos, blue sky and green forest, were flat enough to stay as one box, so they prove the splitting rule and little else. Scores are measured against the five-colour version.
+
+## Grayscale
+
+V7 replaced the five colours with continuous shades, so the drawings start to look like the photo. Error is the average difference per pixel on a 0 to 1 scale.
+
+<Compare images="gray16-photo:Photo, 16×16|gray16-drawn:What it drew" caption="Apple market at 16×16: error 0.013 from 58 boxes, the closest match in the series." />
+
+<Compare images="gray2-photo:Photo, 64×64|gray2-drawn:What it drew" caption="A second apple at 64×64: error 0.099 from 397 boxes, after the recall fix. The shape and lighting survive, and the fine detail doesn't." />
+
+<Compare images="gray1-photo:Photo, 64×64|gray1-drawn:What it drew" caption="Apple market at 64×64: error 0.103 from 310 boxes. The horizon holds, and the two apples turn into patches." />
+
+## Where it failed
+
+V6 tried to form the idea of an apple from 5 different apple photos. In a rerun on 5 photos chosen by hand, the result matched the majority vote only 48% of the time, so it didn't form a usable category.
+
+![V6 rerun, left to right: 5 taught apple photos, their majority vote, then the creature's own result at 48% agreement.](/img/research/organism/evidence/v6-strip.webp)
+
+## Changing what it holds
+
+V1, earlier in the series, tested a different skill: changing one thing about a pictured scene while everything else stays stable. All five operations passed 40 of 40 checks.
+
+![V1 before and after, left to right: recolour, rescale, move, rotate and reshape.](/img/research/organism/evidence/v1-transforms.webp)
+
+## Bugs the tests caught
+
+| Bug | Effect | Fix |
+|---|---|---|
+| Similar memories merging | Boxes on a 31-box photo were lost | A stricter merge threshold for picture writes |
+| Round-robin counters sharing a factor | With 2 pupils, each only ever saw 2 of 4 boxes | A separate counter per pupil |
+| Recall with no distance limit | At higher resolution, recall returned the nearest wrong memory | A recall distance gate |
+
+The recall gate cut error by 29% on the original photo and 58% on a second, independent one, with no regression at 16×16. It was the first change at high resolution that improved accuracy.
+
+## What it means
+
+The photo work is memory, not imagination: it redraws what it was taught and doesn't invent new pictures. Teaching worked better than evolution here. That's the same conclusion as the [FunnelBrain line](/research/funnelbrain), reached in a different system.

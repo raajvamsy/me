@@ -1,0 +1,31 @@
+---
+title: "EquaFile to FunnelZip"
+summary: "Ten versions, from one polynomial per file to a general compressor that mixes many models and picks them per file."
+branch: "main"
+period: "Oct 2026"
+commits: 1
+order: 1
+metric: "10"
+metricLabel: "versions from idea to compressor"
+imagePrompt: "A row of ten small machines, starting with a simple polynomial curve and growing steadily more intricate, ending in a compact engine of mixed lenses."
+---
+
+## The versions
+
+| Version | Idea | Result |
+|---|---|---|
+| V1 | One polynomial per file | Doesn't compress |
+| V2–V4 | Loop, seed and loop, FunnelBrain tree | Don't compress, by the counting argument |
+| V5 | Grammar rules, segment equations | Work only on data with that structure |
+| V6 | Context mixing and an arithmetic coder | Beat xz on CSV |
+| V7 | Cosine series for image, audio and video | Works, but lossy |
+| V9 | Waves found by resonance, resonant filter | Beat FLAC on sound and PNG on a photo |
+| V10 | FunnelZip: all lenses mixed, in C | Beat the best tool on 25 of 27 files over 10 KB |
+
+## The speed round
+
+JPEG Huffman moved into C, along with faster counters and a SIMD mixer. Over 32 files the total got 4.4% smaller, and a 4K JPEG went from 56 seconds to 5.5 seconds. It still missed 1 MB/s on sound, pixels and program code.
+
+A proof caught a real bug along the way: a reshape step changed the file's length and broke round trips.
+
+This branch was committed as one initial commit, so the versions above come from the report and not from the commit history.

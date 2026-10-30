@@ -1,0 +1,22 @@
+---
+title: "WaveMind"
+summary: "The earlier line behind FunnelBrain: memory as wave geometry, learned in one shot with no backpropagation, tested against real baselines in a paper draft."
+order: 3
+commits: 100
+metric: "3.94×"
+metricLabel: "forgetting, against 16,763× for a tiny transformer"
+stats:
+  - { value: "100", label: "commits across all branches" }
+  - { value: "3.94×", label: "forgetting, against 16,763× for a tiny transformer" }
+  - { value: "161,345", label: "perplexity, against 52.3 for a tiny transformer (lower is better)" }
+  - { value: "1", label: "exposure to learn a fact" }
+imagePrompt: "Concepts floating as interfering rings of light over dark water, each cluster a pattern of ripples with its own frequency and phase, in place of a grid of weights."
+---
+
+## The idea
+
+Each concept is an oscillation with a frequency, phase and amplitude, and learning is a small set of online wave operations: cluster, create, merge and normalize. There is no training run and no backpropagation.
+
+## The honest summary
+
+It is strong at what it was built for, which is one-shot learning, retention and provable recall. It is weak at prediction and generation. Several results on these branches are negative, and I've kept them because they show exactly where the approach stops.

@@ -1,0 +1,34 @@
+---
+title: "Build observability"
+kind: "Platform"
+summary: "A platform I built to make build data trustworthy, with an AI agent that investigates failures and routes them to the right people."
+order: 3
+imagePrompt: "Centered composition: a dark software build pipeline shown as a long horizontal conveyor of identical glowing cube-shaped build jobs passing through a row of precise inspection gates, all lit warm white. Exactly one cube in the very center has failed and glows signal orange with a visible crack. A small round robot stands directly beside it at the center of the frame, holding a magnifying glass and following a thin orange thread of light from the failed cube to a small gear inside it, which is the root cause. Keep the robot and failed cube in the middle third of the image. No buildings, no city, no landscape, no mountains, no screens."
+proof: "Started by finding the first dashboard was counting builds that never happened."
+---
+
+## The problem
+
+Builds fail for many reasons: a platform bug, a mistake in a project, or infrastructure. Nobody could tell which ones mattered, because the signal was buried in log lines.
+
+## First, make the numbers true
+
+My first dashboard was confidently wrong. Log lines could arrive more than once, and it counted them as new builds. I rebuilt the pipeline around when each line was written, with one record per real build, and checked the result against the source until the two matched exactly.
+
+This shaped everything after it. A dashboard you can't trust is worse than none.
+
+## Turning logs into owned errors
+
+Each failure is normalised into a stable error code, so one problem with many variations appears once, and different problems don't share a code. Each code is attributed to the side that can fix it.
+
+## The AI investigator
+
+An agent runs on a schedule or on demand. It picks the top errors, reads the logs and writes a root-cause report for each. Each schedule has its own playbook, and findings are routed to the right people.
+
+## Asking questions in plain English
+
+Build data is exposed through an MCP server. The assistant has to follow a procedure: frame the window, count, check known issues, read logs if needed, then check that the numbers add up before answering.
+
+## Honest status
+
+The investigator has produced findings, but I don't yet have evidence that it reduces time to fix. That is the next thing to measure.

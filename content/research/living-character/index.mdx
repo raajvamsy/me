@@ -1,0 +1,29 @@
+---
+title: "Living character"
+summary: "A proof of concept that combines the research lines: a character with an organism, a language model, a familiarity field and long-term memory, each of which can be unplugged."
+order: 7
+commits: 0
+metric: "96% → 0%"
+metricLabel: "needs in range with hand-written steering, then without it"
+stats:
+  - { value: "4", label: "parts that can each be unplugged" }
+  - { value: "96% → 0%", label: "needs in range with hand-written steering, then without it" }
+  - { value: "25–45 s", label: "per thinking turn on a laptop" }
+  - { value: "1", label: "false memory caught by the gate" }
+imagePrompt: "A small office worker character seen through glass, with four glowing cables behind him each leading to a separate unit he depends on: a body clock, a speaking machine, a field of funnels and a memory library."
+---
+
+## The design
+
+| Part | Job |
+|---|---|
+| Organism | Lives every tick, with needs, a habit and imagination |
+| Language | Gemma 4, running only at decision points |
+| Familiarity | One-shot recognition of names, using FunnelBrain |
+| Memory | Episodes in MemoryLayer, recalled while thinking |
+
+What the character says about the past must cite a recalled event. A memory of someone merely *saying* something doesn't count as proof.
+
+The body learns what its world does from experience, but its steering is still partly hand-written, and it fails in this world without that steering. [The recorded life](/research/living-character/proof-of-concept) shows both.
+
+This folder isn't in git yet, so it has no branches.

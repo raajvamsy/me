@@ -1,0 +1,25 @@
+---
+title: "Web preview"
+kind: "Platform"
+summary: "Rebuilt a React Native web preview pipeline to fit inside a tight container memory limit, with much faster repeat builds and live reload."
+order: 4
+imagePrompt: "A compact machine inside a tightly fitted glass container, with stacked cached modules being reused along a fast conveyor, conveying software builds becoming much faster inside strict memory limits."
+proof: "The failure looked like a slow bundler. Measuring showed the real limit was memory."
+---
+
+## The problem
+
+Preview is the loop developers wait on all day. One memory-limited container serves several users at once, which rules out a persistent dev server for each project.
+
+The first version of the new pipeline didn't fit. A single build could be killed by the kernel for running out of memory, and that surfaced only as a bare `SIGKILL` in the logs. Measuring it showed memory was the binding limit, not CPU, and that the spike wasn't where I had assumed.
+
+## What changed
+
+- **A shared transform cache.** Metro's transform cache became shared across projects, so work done for one can be reused by another.
+- **A build admission lock.** Different projects previewing at once now queue, and no longer run each other out of memory.
+- **Boundary-based edit builds.** With caches in place, an edit walks far fewer modules.
+- **A faster live-reload client.** The time to apply a new build dropped sharply.
+
+## What I learned
+
+Measure before optimising. The bundler looked like the problem, but the memory ceiling was elsewhere, so tuning the bundler alone wouldn't have fixed it.
