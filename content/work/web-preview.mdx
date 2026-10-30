@@ -1,7 +1,7 @@
 ---
 title: "Web preview"
 kind: "Platform"
-summary: "Rebuilt a React Native web preview pipeline to fit inside a tight container memory limit, with much faster repeat builds and live reload."
+summary: "Rebuilt a React Native web preview pipeline to fit inside a tight container memory limit, with repeat builds 7× faster and live reload 3.5× faster."
 order: 4
 imagePrompt: "A compact machine inside a tightly fitted glass container, with stacked cached modules being reused along a fast conveyor, conveying software builds becoming much faster inside strict memory limits."
 proof: "The failure looked like a slow bundler. Measuring showed the real limit was memory."
@@ -19,6 +19,16 @@ The first version of the new pipeline didn't fit. A single build could be killed
 - **A build admission lock.** Different projects previewing at once now queue, and no longer run each other out of memory.
 - **Boundary-based edit builds.** With caches in place, an edit walks far fewer modules.
 - **A faster live-reload client.** The time to apply a new build dropped sharply.
+
+## Results
+
+| Measure | Improvement |
+|---|---:|
+| Repeat build, same project | 7× faster |
+| Peak memory | Nearly half |
+| Live reload | 3.5× faster |
+
+The build comparison is a cold shared cache against a warm one on the same project. It shows what the cache buys, and it isn't a comparison of the whole new pipeline against the old one.
 
 ## What I learned
 

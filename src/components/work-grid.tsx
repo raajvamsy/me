@@ -14,6 +14,7 @@ function Visual({ slug }: { slug: string }) {
   }
   const metrics: Record<string, [string, string]> = {
     compression: ["4.92%", "smaller than JPEG XL effort 9 on 4K photos"],
+    "web-preview": ["7×", "faster repeat builds"],
     products: ["4", "products"],
   };
   const metric = metrics[slug];
