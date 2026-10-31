@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
-import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
+import { Caveat, Inter, JetBrains_Mono, Protest_Revolution } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import Link from "next/link";
+import { InkFilters, InkRidge } from "@/components/ink-art";
 import { getEntries } from "@/lib/content";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const display = Archivo({
+const display = Protest_Revolution({
   subsets: ["latin"],
   variable: "--font-display",
-  axes: ["wdth"],
+  weight: "400",
 });
+const hand = Caveat({ subsets: ["latin"], variable: "--font-hand" });
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
@@ -33,8 +35,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   const hasDocs = getEntries("docs").length > 0;
 
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+    <html lang="en" className={`${display.variable} ${hand.variable} ${sans.variable} ${mono.variable}`}>
       <body>
+        <InkFilters />
         <nav className="site-nav" aria-label="Main">
           <div className="wrap">
             <Link href="/" className="name" aria-label="Raaj Vamsy, home">
@@ -54,6 +57,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </nav>
         <main>{children}</main>
         <footer className="site-footer">
+          <InkRidge />
           <div className="wrap">
             <span>
               <a href={`mailto:${site.email}`}>{site.email}</a> · <a href={site.github}>GitHub</a> · <a href={site.linkedin}>LinkedIn</a> · <a href="/resume.pdf">Resume</a>

@@ -13,6 +13,7 @@
   --mid: #e4b75f;
   --bad: #f08a77;
   --display: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  --hand: var(--font-hand), cursive;
   --sans: var(--font-sans), -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --mono: var(--font-mono), ui-monospace, Menlo, Consolas, monospace;
 }
@@ -1014,4 +1015,229 @@ a {
     font-size: 12px;
     text-align: center;
   }
+}
+
+/* Ink: everything below makes the pages feel drawn rather than typeset. */
+body {
+  background-image: url("/art/grain.webp");
+  background-size: 256px;
+  
+  font-synthesis: none;
+}
+
+h1,
+h2,
+h3,
+.stats-strip b,
+.big-metric b {
+  font-weight: 400 !important;
+  letter-spacing: 0.005em !important;
+}
+
+/* A fast brush swipe under each big heading. */
+.section-head h2,
+.page-head h1,
+.hero-page-title {
+  position: relative;
+  isolation: isolate;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.section-head h2::after,
+.page-head h1::after,
+.hero-page-title::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -0.12em;
+  right: -0.25em;
+  bottom: -0.04em;
+  height: 0.34em;
+  background: var(--accent);
+  -webkit-mask: url("/art/brush-line.webp") center / 100% 100% no-repeat;
+  mask: url("/art/brush-line.webp") center / 100% 100% no-repeat;
+}
+
+.section-head .label {
+  color: var(--muted);
+  font: 400 24px/1 var(--hand);
+  letter-spacing: 0;
+  text-transform: none;
+  transform: rotate(-1.5deg);
+}
+
+/* Home canvas: words on the left, the painting on the right. */
+.hero-canvas {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.hero-words {
+  position: relative;
+  z-index: 1;
+  padding: 34px 0 44px;
+}
+
+.hero-words p {
+  max-width: 520px;
+  margin-top: 22px;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+}
+
+.hero-words .contact-links {
+  margin-top: 26px;
+}
+
+.seal {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 20px;
+  background: var(--accent);
+  transform: rotate(-4deg);
+  -webkit-mask: url("/art/brush-seal.webp") center / 100% 100% no-repeat;
+  mask: url("/art/brush-seal.webp") center / 100% 100% no-repeat;
+}
+
+.seal svg {
+  width: 38px;
+  height: 38px;
+}
+
+.ink-scene {
+  position: relative;
+  min-height: 600px;
+  margin-top: -24px;
+}
+
+.ink-wash {
+  position: absolute;
+  inset: 0 -3% 12% 0;
+  background: var(--accent);
+  opacity: 0.92;
+  -webkit-mask: url("/art/brush-wash.webp") center / 100% 100% no-repeat;
+  mask: url("/art/brush-wash.webp") center / 100% 100% no-repeat;
+}
+
+.ink-drawing {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Illustrations bleed out of their brush marks. Evidence images stay whole. */
+.tile-visual.flush img,
+.tile-visual > img,
+.page-media img {
+  -webkit-mask: url("/art/brush-frame.webp") center / 100% 100% no-repeat;
+  mask: url("/art/brush-frame.webp") center / 100% 100% no-repeat;
+}
+
+/* Tiles are drawn boxes on the paper, not cards. */
+.tile {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.tile::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border: 2px solid var(--line);
+  filter: url(#ink-rough);
+  pointer-events: none;
+  transition: border-color 0.15s;
+}
+
+.tile:hover::before {
+  border-color: var(--accent);
+}
+
+.tile-top,
+.tile-body,
+.tile-visual {
+  position: relative;
+}
+
+.site-footer {
+  border-top: 0;
+}
+
+.ink-ridge {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 760px) {
+  .hero-canvas {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .hero-words {
+    padding-bottom: 0;
+  }
+
+  .ink-scene {
+    min-height: 0;
+    aspect-ratio: 1;
+    margin-top: 0;
+  }
+}
+
+.hero h1 {
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 640px) {
+  .hero h1 {
+    font-size: 15vw;
+  }
+
+  .stats-strip b {
+    font-size: clamp(30px, 10.5vw, 44px);
+    white-space: nowrap;
+  }
+}
+
+.ink-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ink-duel {
+  position: relative;
+  height: clamp(210px, 21vw, 300px);
+}
+
+/* The brush font's letters touch at small sizes: "IC" can read as "K". */
+h1,
+h2,
+h3 {
+  font-variant-ligatures: none;
+  font-kerning: none;
+}
+
+h3 {
+  letter-spacing: 0.05em !important;
+}
+
+h2 {
+  letter-spacing: 0.025em !important;
 }

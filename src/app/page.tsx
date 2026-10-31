@@ -1,3 +1,4 @@
+import { InkScene, Seal } from "@/components/ink-art";
 import { WorkGrid } from "@/components/work-grid";
 import { getEntries } from "@/lib/content";
 import { site } from "@/lib/site";
@@ -17,24 +18,28 @@ export default function Home() {
           <span>Raaj Vamsy</span>{" "}
           <span className="last">Rayavarapu</span>
         </h1>
-        <div className="hero-foot">
-          <div className="label">
-            Principal Engineer
-            <br />
-            Independent researcher
-            <br />
-            Hyderabad, India
+        <div className="hero-canvas">
+          <div className="hero-words">
+            <Seal />
+            <div className="label">
+              Principal Engineer
+              <br />
+              Independent researcher
+              <br />
+              Hyderabad, India
+            </div>
+            <p>
+              I build developer platforms at work and learning systems on my own time. These pages
+              show the tests and the failures along with the results.
+            </p>
+            <div className="contact-links">
+              <a href={`mailto:${site.email}`}>Email</a>
+              <a href={site.github}>GitHub</a>
+              <a href={site.linkedin}>LinkedIn</a>
+              <a href="/resume.pdf">Resume</a>
+            </div>
           </div>
-          <p>
-            I build developer platforms at work and learning systems on my own time. These pages
-            show the tests and the failures along with the results.
-          </p>
-        </div>
-        <div className="contact-links">
-          <a href={`mailto:${site.email}`}>Email</a>
-          <a href={site.github}>GitHub</a>
-          <a href={site.linkedin}>LinkedIn</a>
-          <a href="/resume.pdf">Resume</a>
+          <InkScene />
         </div>
       </section>
 
