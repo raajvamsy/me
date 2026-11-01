@@ -1,0 +1,31 @@
+---
+title: "MemoryLayer"
+kind: "Product"
+summary: "Local-first, persistent memory for AI coding agents, with tools that check an agent's claims against what it has stored. I built and launched it solo."
+order: 7
+imagePrompt: "A small AI agent at a desk consulting a vast, softly lit library of memory crystals, with one crystal being checked against a glowing proof."
+proof: "Live at memorylayer.in, on npm, and listed on the official MCP registry."
+---
+
+**[memorylayer.in](https://memorylayer.in)** · [npm](https://www.npmjs.com/package/@raajvamsy/memorylayer)
+
+## The problem
+
+Coding agents forget everything between sessions. Each new chat re-reads the code, re-learns the project's decisions, and repeats mistakes that were already fixed. Worse, an agent states things with confidence whether or not anything backs them.
+
+## What it does
+
+MemoryLayer is an MCP server that gives every agent the same long-term memory on your own machine. It runs with one command, `npx @raajvamsy/memorylayer`, and works with Claude Code, Cursor, Windsurf and any other MCP client.
+
+- **Remember and recall.** Agents store decisions, errors and fixes, and find them later with hybrid vector and keyword search.
+- **Code intelligence.** It indexes a repository so an agent can find a symbol, its callers and the blast radius of an edit before changing it.
+- **Checking claims.** `verify` splits an agent's text into claims and marks each one as grounded, unsupported or contradicted by stored knowledge. `prove` gives a formal answer for a single claim from rules the project has defined.
+- **IDE setup.** One command installs hooks so the agent recalls before it acts and saves what it learns.
+
+## How I built it
+
+I designed, built and shipped it alone: the Node MCP server, a separate reasoning engine compiled into signed binaries, the website and docs, licensing, and a package registry. Benchmarks were rewritten after I found the first one was flattering the product. That story is in [the research notes](/research/memorylayer).
+
+## Status
+
+Version 1.7.1 is live. I use it in my own work every day, which is also where I find most of its bugs. One I am fixing now: in very long sessions, `verify` can time out even though a fresh server answers it instantly.
