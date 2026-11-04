@@ -25,6 +25,7 @@ export default async function ResearchBranchPage({ params }: Props) {
   if (!line || index < 0) notFound();
 
   const page = line.branches[index];
+  const prev = line.branches[index - 1];
   const next = line.branches[index + 1];
 
   return (
@@ -33,15 +34,22 @@ export default async function ResearchBranchPage({ params }: Props) {
       summary={page.summary}
       body={page.body}
       media={`research/${line.line}/${page.slug}`}
-      eyebrow={
+      crumbs={
         <>
-          <Link href="/research">Research</Link> / <Link href={`/research/${line.line}`}>{line.title}</Link>
-          <br />
-          <b>{page.branch}</b>
-          {page.period && ` / ${page.period}`}
-          {page.commits !== undefined && ` / ${page.commits} commits`}
+          <Link href="/research">Research</Link>
+          <span aria-hidden="true">/</span>
+          <Link href={`/research/${line.line}`}>{line.title}</Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{page.title}</span>
         </>
       }
+      badges={["Research", ...(page.branch ? [page.branch] : [])]}
+      details={[
+        { label: "Line", value: line.title },
+        ...(page.period ? [{ label: "Period", value: page.period }] : []),
+        ...(page.commits !== undefined ? [{ label: "Commits", value: page.commits.toLocaleString("en-US") }] : []),
+      ]}
+      prev={prev && { href: `/research/${line.line}/${prev.slug}`, title: prev.title }}
       next={next && { href: `/research/${line.line}/${next.slug}`, title: next.title }}
     />
   );

@@ -106,48 +106,106 @@ export function EntryPage({
   title,
   summary,
   body,
-  eyebrow,
+  crumbs,
+  badges = [],
+  details = [],
+  stack = [],
+  prev,
   next,
   media,
 }: {
   title: string;
   summary: string;
   body: string;
-  eyebrow: ReactNode;
+  crumbs: ReactNode;
+  badges?: string[];
+  details?: { label: string; value: ReactNode }[];
+  stack?: string[];
+  prev?: { href: string; title: string };
   next?: { href: string; title: string };
   media?: string;
 }) {
   const headings = [...body.matchAll(/^## (.+)$/gm)].map((match) => match[1].replaceAll("`", ""));
+  const hasDetails = details.length > 0 || stack.length > 0;
 
   return (
     <article className="wrap">
       <header className="entry-head">
-        <div className="label">{eyebrow}</div>
-        <h1>{title}</h1>
-        <p className="lede">{summary}</p>
+        <nav aria-label="Breadcrumb" className="crumbs">
+          {crumbs}
+        </nav>
+        <div className="row">
+          <div>
+            {badges.length > 0 && (
+              <div className="chips">
+                {badges.map((badge) => (
+                  <span key={badge} className={badge === "Draft" ? "badge draft-flag" : "badge"}>
+                    {badge}
+                  </span>
+                ))}
+              </div>
+            )}
+            <h1>{title}</h1>
+            <p className="lede">{summary}</p>
+          </div>
+          {hasDetails && (
+            <aside className="card details">
+              <h2>Details</h2>
+              <dl>
+                {details.map((item) => (
+                  <div key={item.label}>
+                    <dt>{item.label}</dt>
+                    <dd>{item.value}</dd>
+                  </div>
+                ))}
+                {stack.length > 0 && (
+                  <div className="stack">
+                    <dt>Stack</dt>
+                    <dd className="chips">
+                      {stack.map((tag) => (
+                        <span key={tag} className="chip">
+                          {tag}
+                        </span>
+                      ))}
+                    </dd>
+                  </div>
+                )}
+              </dl>
+            </aside>
+          )}
+        </div>
       </header>
       <div className="entry-grid">
-        <nav className="toc" aria-label="On this page">
-          <span className="label">On this page</span>
-          <ol>
-            {headings.map((heading, index) => (
-              <li key={heading}>
-                <a href={`#${slugify(heading)}`}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <span>{heading}</span>
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-        <div>
+        {headings.length > 1 && (
+          <nav className="toc" aria-label="On this page">
+            <h2>On this page</h2>
+            <ol>
+              {headings.map((heading) => (
+                <li key={heading}>
+                  <a href={`#${slugify(heading)}`}>{heading}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
+        <div className="entry-main">
           {media && <PageMedia base={media} title={title} />}
           <Prose source={body} />
-          {next && (
-            <Link href={next.href} className="next-link">
-              <span className="label">Next</span>
-              <strong>{next.title}</strong>
-            </Link>
+          {(prev || next) && (
+            <nav className="pager" aria-label="More pages">
+              {prev && (
+                <Link href={prev.href} className="card">
+                  <small>← Previous</small>
+                  <strong>{prev.title}</strong>
+                </Link>
+              )}
+              {next && (
+                <Link href={next.href} className="card" style={{ textAlign: "right" }}>
+                  <small>Next →</small>
+                  <strong>{next.title}</strong>
+                </Link>
+              )}
+            </nav>
           )}
         </div>
       </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EntryList } from "@/components/entry-list";
 import { EntryPage } from "@/components/entry-page";
@@ -6,7 +7,7 @@ import { WorkGrid } from "@/components/work-grid";
 import { getEntries, getEntry, type Collection } from "./content";
 
 // Each section is one line of config, so adding a new section stays cheap.
-export function collectionRoutes(collection: Collection, title: string, intro: string) {
+export function collectionRoutes(collection: Collection, title: string, heading: string, intro: string) {
   const base = `/${collection}`;
 
   return {
@@ -18,7 +19,8 @@ export function collectionRoutes(collection: Collection, title: string, intro: s
       return (
         <div className="wrap">
           <header className="page-head">
-            <h1>{title}</h1>
+            <div className="eyebrow">{title}</div>
+            <h1>{heading}</h1>
             <p>{intro}</p>
           </header>
           {collection === "work" ? (
@@ -48,6 +50,7 @@ export function collectionRoutes(collection: Collection, title: string, intro: s
       const index = entries.findIndex((entry) => entry.slug === slug);
       if (index < 0) notFound();
       const entry = entries[index];
+      const prev = entries[index - 1];
       const next = entries[index + 1];
       return (
         <EntryPage
@@ -55,12 +58,20 @@ export function collectionRoutes(collection: Collection, title: string, intro: s
           summary={entry.summary}
           body={entry.body}
           media={`${collection}/${entry.slug}`}
-          eyebrow={
+          crumbs={
             <>
-              <b>{title}</b> / {entry.kind} {entry.date && `/ ${entry.date}`}{" "}
-              {entry.draft && <span className="draft-flag">Draft, hidden in production</span>}
+              <Link href={base}>{title}</Link>
+              <span aria-hidden="true">/</span>
+              <span aria-current="page">{entry.title}</span>
             </>
           }
+          badges={[entry.kind, ...(entry.draft ? ["Draft"] : [])]}
+          details={[
+            { label: "Type", value: entry.kind },
+            ...(entry.date ? [{ label: "Date", value: entry.date }] : []),
+          ]}
+          stack={entry.tags}
+          prev={prev && { href: `${base}/${prev.slug}`, title: prev.title }}
           next={next && { href: `${base}/${next.slug}`, title: next.title }}
         />
       );
@@ -71,7 +82,8 @@ export function collectionRoutes(collection: Collection, title: string, intro: s
 export const work = collectionRoutes(
   "work",
   "Work",
-  "Research and engineering, each with the question, the method, the results and what failed.",
+  "Case studies and products",
+  "Platform engineering, products and research. Each covers the problem, what changed, the measured result and what failed.",
 );
-export const blog = collectionRoutes("blog", "Writing", "Notes and essays.");
-export const docs = collectionRoutes("docs", "Docs", "Reference notes.");
+export const blog = collectionRoutes("blog", "Writing", "Notes and essays", "Notes and essays.");
+export const docs = collectionRoutes("docs", "Docs", "Reference notes", "Reference notes.");

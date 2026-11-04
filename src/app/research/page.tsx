@@ -13,7 +13,7 @@ export default function ResearchLanding() {
     <div className="wrap">
       <PageHero
         title="Research"
-        eyebrow="Independent research / 2026"
+        eyebrow="Independent research"
         summary="Every line of inquiry, branch by branch: what each one asked, what it found, and where it stopped."
         stats={[
           { value: String(lines.length), label: "lines of research" },
@@ -23,7 +23,10 @@ export default function ResearchLanding() {
         ]}
       />
       <div className="section-head">
-        <h2>Lines of research</h2>
+        <div>
+          <div className="eyebrow">Lines of research</div>
+          <h2>{lines.length} lines, each with its branches</h2>
+        </div>
       </div>
       <ResearchGrid
         pages={lines.map((line) => ({

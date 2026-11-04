@@ -1,8 +1,8 @@
-import type { CSSProperties } from "react";
+import type { ReactNode } from "react";
 import Link from "next/link";
+import { Icon } from "@/components/icons";
 import { hasMedia } from "@/components/media";
 import type { ResearchPage } from "@/lib/research";
-
 
 export function PageHero({
   title,
@@ -11,60 +11,59 @@ export function PageHero({
   stats,
 }: {
   title: string;
-  eyebrow: React.ReactNode;
+  eyebrow: ReactNode;
   summary: string;
   stats: { value: string; label: string }[];
 }) {
   return (
     <>
-      <section className="hero">
-        <div className="label hero-eyebrow">{eyebrow}</div>
-        <h1 className="hero-page-title">{title}</h1>
-        <div className="hero-foot">
-          <div />
-          <p>{summary}</p>
-        </div>
-      </section>
-      <section className="stats-strip" aria-label="Key numbers">
-        {stats.map(({ value, label }) => (
-          <div key={label}>
-            <b>{value}</b>
-            <span>{label}</span>
-          </div>
-        ))}
-      </section>
+      <header className="page-head">
+        <div className="crumbs">{eyebrow}</div>
+        <h1>{title}</h1>
+        <p>{summary}</p>
+      </header>
+      {stats.length > 0 && (
+        <section className="stat-cards" aria-label="Key numbers">
+          {stats.map(({ value, label }) => (
+            <div key={label} className="card">
+              <b>{value}</b>
+              <span>{label}</span>
+            </div>
+          ))}
+        </section>
+      )}
     </>
   );
 }
 
 export function ResearchGrid({ pages }: { pages: (ResearchPage & { href: string; tag: string })[] }) {
   return (
-    <div className="bento">
-      {pages.map((page, index) => {
+    <div className="grid">
+      {pages.map((page) => {
         const image = `/img/research/${page.line}/${page.slug}.webp`;
         return (
-          <Link key={page.href} href={page.href} className="tile">
-            <div className="tile-top label">
-              <span>
-                <b>{String(index + 1).padStart(2, "0")}</b> / {page.tag}
-              </span>
-            </div>
+          <Link key={page.href} href={page.href} className="card tile">
             {hasMedia(image) ? (
-              <div className="tile-visual flush">
+              <div className="tile-visual">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={image} alt="" loading="lazy" />
               </div>
             ) : (
-              <div className="tile-visual">
-                <div className="big-metric">
-                  <b style={{ "--chars": [...page.metric].length } as CSSProperties}>{page.metric}</b>
-                  <span>{page.metricLabel}</span>
-                </div>
+              <div className="tile-visual metric-visual">
+                <b>{page.metric}</b>
+                <span>{page.metricLabel}</span>
               </div>
             )}
             <div className="tile-body">
+              <div className="chips">
+                <span className="badge">{page.tag}</span>
+              </div>
               <h3>{page.title}</h3>
               <p>{page.summary}</p>
+              <span className="link">
+                Read more
+                <Icon name="arrow" />
+              </span>
             </div>
           </Link>
         );

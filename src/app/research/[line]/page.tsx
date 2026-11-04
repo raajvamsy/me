@@ -25,7 +25,13 @@ export default async function ResearchLinePage({ params }: Props) {
     <div className="wrap">
       <PageHero
         title={line.title}
-        eyebrow={<Link href="/research">Research</Link>}
+        eyebrow={
+          <>
+            <Link href="/research">Research</Link>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{line.title}</span>
+          </>
+        }
         summary={line.summary}
         stats={line.stats}
       />
@@ -34,7 +40,10 @@ export default async function ResearchLinePage({ params }: Props) {
         <Prose source={line.body} />
       </div>
       <div className="section-head">
-        <h2>Branches</h2>
+        <div>
+          <div className="eyebrow">Branches</div>
+          <h2>{line.branches.length} write-ups in this line</h2>
+        </div>
       </div>
       <ResearchGrid
         pages={line.branches.map((branch) => ({
