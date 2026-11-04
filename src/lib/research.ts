@@ -29,6 +29,7 @@ function readPage(line: string, file: string): ResearchPage {
     kind: "Research",
     summary: String(data.summary ?? ""),
     order: Number(data.order ?? 100),
+    tags: [],
     draft: false,
     body: content,
     branch: data.branch ? String(data.branch) : undefined,

@@ -12,6 +12,7 @@ export type Entry = {
   date?: string;
   order: number;
   proof?: string;
+  tags: string[];
   imagePrompt?: string;
   draft: boolean;
   body: string;
@@ -36,6 +37,7 @@ export function getEntries(collection: Collection): Entry[] {
         summary: String(data.summary ?? ""),
         date: data.date ? String(data.date) : undefined,
         order: Number(data.order ?? 100),
+        tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
         proof: data.proof ? String(data.proof) : undefined,
         imagePrompt: data.imagePrompt ? String(data.imagePrompt) : undefined,
         draft: Boolean(data.draft),

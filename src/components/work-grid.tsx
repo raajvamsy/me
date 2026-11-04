@@ -50,6 +50,13 @@ export function WorkGrid({ entries }: { entries: Entry[] }) {
           <div className="tile-body">
             <h3>{entry.title}</h3>
             <p>{entry.proof ?? entry.summary}</p>
+            {entry.tags.length > 0 && (
+              <ul className="tags">
+                {entry.tags.map((tag) => (
+                  <li key={tag}>{tag}</li>
+                ))}
+              </ul>
+            )}
           </div>
         </Link>
       ))}

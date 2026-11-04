@@ -47,33 +47,35 @@ export default function Home() {
   const more = pick(["memorylayer", "organism", "compression"]);
 
   return (
-    <div className="wrap">
-      <section className="hero">
-        <p className="eyebrow">Principal Engineer · Hyderabad, India</p>
-        <h1>
-          I build developer platforms that teams rely on, and ship AI products on my own.
-        </h1>
-        <p className="hero-sub">
-          {site.name}. Principal Engineer at WaveMaker, owning the React Native build and preview
-          stack. Outside work I launched MemoryLayer and run independent research on learning
-          systems.
-        </p>
-        <div className="cta-row">
-          <a className="btn primary" href="/resume.pdf">
-            Download resume
-          </a>
-          <a className="btn" href={`mailto:${site.email}`}>
-            Email me
-          </a>
-          <a className="btn" href={site.linkedin}>
-            LinkedIn
-          </a>
-          <a className="btn" href={site.github}>
-            GitHub
-          </a>
+    <>
+      <section className="hero-band">
+        <div className="hero-copy">
+          <p className="eyebrow">Principal Engineer · Hyderabad, India</p>
+          <h1>
+            From developer platforms to <em>working AI products.</em>
+          </h1>
+          <p className="hero-sub">
+            I&apos;m {site.name}. At WaveMaker I own the React Native build and preview stack. On
+            my own I launched MemoryLayer and run independent research on learning systems.
+          </p>
+          <div className="cta-row">
+            <a className="btn light" href="/resume.pdf">
+              Download resume
+            </a>
+            <a className="btn ghost" href={`mailto:${site.email}`}>
+              Email me
+            </a>
+            <a className="btn ghost" href={site.linkedin}>
+              LinkedIn
+            </a>
+            <a className="btn ghost" href={site.github}>
+              GitHub
+            </a>
+          </div>
         </div>
       </section>
 
+    <div className="wrap">
       <section className="impact" aria-label="Impact">
         {impact.map(([value, label, where]) => (
           <div key={label}>
@@ -141,5 +143,6 @@ export default function Home() {
         </div>
       </section>
     </div>
+    </>
   );
 }
