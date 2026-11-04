@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { WorkGrid } from "@/components/work-grid";
 import { getEntries, type Entry } from "@/lib/content";
 import { site } from "@/lib/site";
 
@@ -37,14 +36,33 @@ const skills = [
   ["Backend", "Python, Java, Spring Boot, FastAPI, Supabase, PostgreSQL"],
 ];
 
-const pick = (slugs: string[]) => {
-  const all = getEntries("work");
-  return slugs.map((s) => all.find((e) => e.slug === s)).filter((e): e is Entry => !!e);
-};
+const ticker = [
+  "React Native", "Expo", "TypeScript", "Next.js", "MCP", "Python", "Java", "Spring Boot",
+  "Supabase", "PostgreSQL", "Z3", "RAG", "Docker", "Elasticsearch",
+];
+
+const principles = [
+  ["Measure first", "The slow bundler turned out to be a memory limit. I profile before I optimise."],
+  ["Verify end to end", "Migrations are checked by running real generated apps, and screenshots by re-rendering them."],
+  ["Show the failures", "Research pages list the failed attempts next to the results."],
+  ["Ship it", "MemoryLayer was built and launched solo, and it is live on npm and the MCP registry."],
+];
+
+// Feature cards: a repeating 7/5, 5/7, 6/6 rhythm.
+const featured: [string, string][] = [
+  ["web-preview", "s7"],
+  ["build-observability", "s5"],
+  ["platform", "s5"],
+  ["memorylayer", "s7"],
+  ["organism", ""],
+  ["compression", ""],
+];
 
 export default function Home() {
-  const engineering = pick(["web-preview", "build-observability", "platform"]);
-  const more = pick(["memorylayer", "organism", "compression"]);
+  const all = getEntries("work");
+  const cards = featured
+    .map(([slug, span]) => ({ entry: all.find((e) => e.slug === slug), span }))
+    .filter((c): c is { entry: Entry; span: string } => !!c.entry);
 
   return (
     <>
@@ -60,7 +78,7 @@ export default function Home() {
           </p>
           <div className="cta-row">
             <a className="btn light" href="/resume.pdf">
-              Download resume
+              Download resume ↓
             </a>
             <a className="btn ghost" href={`mailto:${site.email}`}>
               Email me
@@ -75,74 +93,127 @@ export default function Home() {
         </div>
       </section>
 
-    <div className="wrap">
-      <section className="impact" aria-label="Impact">
-        {impact.map(([value, label, where]) => (
-          <div key={label}>
-            <b>{value}</b>
-            <span>{label}</span>
-            <i>{where}</i>
-          </div>
-        ))}
-      </section>
-
-      <section id="experience" className="block">
-        <div className="section-head">
-          <h2>Experience</h2>
-          <a href="/resume.pdf">Full resume →</a>
-        </div>
-        <ol className="roles">
-          {roles.map((r) => (
-            <li key={r.title}>
-              <span className="label">{r.when}</span>
-              <div>
-                <h3>
-                  {r.title} <small>{r.org}</small>
-                </h3>
-                <p>{r.text}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-        <dl className="skills">
-          {skills.map(([k, v]) => (
-            <div key={k}>
-              <dt className="label">{k}</dt>
-              <dd>{v}</dd>
+      <div className="wrap">
+        <section className="impact" aria-label="Impact">
+          {impact.map(([value, label, where]) => (
+            <div key={label}>
+              <b>{value}</b>
+              <span>{label}</span>
+              <i>{where}</i>
             </div>
           ))}
-        </dl>
-      </section>
+        </section>
 
-      <section id="work" className="block">
-        <div className="section-head">
-          <h2>Engineering at WaveMaker</h2>
-          <Link href="/work">All work →</Link>
+        <div className="marquee" aria-hidden="true">
+          <div className="marquee-track">
+            {[...ticker, ...ticker].map((t, i) => (
+              <span key={i}>{t}</span>
+            ))}
+          </div>
         </div>
-        <WorkGrid entries={engineering} />
-      </section>
 
-      <section className="block">
-        <div className="section-head">
-          <h2>Products and research</h2>
-          <Link href="/research">All research →</Link>
-        </div>
-        <WorkGrid entries={more} />
-      </section>
+        <section id="work" className="block">
+          <div className="section-row section-head">
+            <div>
+              <p className="label">Selected work</p>
+              <h2>Platforms, products and research.</h2>
+            </div>
+            <Link href="/work" className="more">
+              All work →
+            </Link>
+          </div>
+          <div className="feature-grid">
+            {cards.map(({ entry, span }) => (
+              <Link key={entry.slug} href={`/work/${entry.slug}`} className={`feature ${span}`}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`/img/work/${entry.slug}.webp`} alt="" loading="lazy" />
+                <span className="pill">{entry.kind}</span>
+                <span className="go" aria-hidden="true">
+                  →
+                </span>
+                <h3>{entry.title}</h3>
+                <p>{entry.proof ?? entry.summary}</p>
+                {entry.tags.length > 0 && (
+                  <ul className="tags">
+                    {entry.tags.map((tag) => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                )}
+              </Link>
+            ))}
+          </div>
+        </section>
 
-      <section className="contact-band">
-        <h2>Hiring, or want to talk shop?</h2>
-        <p>Email is the fastest way to reach me.</p>
-        <div className="cta-row">
-          <a className="btn primary" href={`mailto:${site.email}`}>
-            {site.email}
-          </a>
-          <a className="btn" href="/resume.pdf">
-            Resume (PDF)
-          </a>
-        </div>
-      </section>
-    </div>
+        <section id="experience" className="block">
+          <div className="split">
+            <div className="section-head">
+              <p className="label">Experience</p>
+              <h2>From founding engineer to principal.</h2>
+              <p>I joined the React Native platform team at its start and have owned its developer stack since.</p>
+              <a className="btn" href="/resume.pdf">
+                Full resume ↓
+              </a>
+            </div>
+            <div>
+              <ol className="roles">
+                {roles.map((r) => (
+                  <li key={r.title}>
+                    <span className="label">{r.when}</span>
+                    <div>
+                      <h3>
+                        {r.title} <small>{r.org}</small>
+                      </h3>
+                      <p>{r.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <dl className="skills">
+                {skills.map(([k, v]) => (
+                  <div key={k}>
+                    <dt className="label">{k}</dt>
+                    <dd>{v}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </section>
+
+        <section className="block">
+          <div className="section-head">
+            <p className="label">How I work</p>
+            <h2>Habits that show up in the results.</h2>
+          </div>
+          <ol className="principles">
+            {principles.map(([title, text], i) => (
+              <li key={title}>
+                <b>{String(i + 1).padStart(2, "0")}</b>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section className="contact-band">
+          <p className="label kicker">Contact</p>
+          <h2>Hiring, or want to talk shop?</h2>
+          <p>Email is the fastest way to reach me.</p>
+          <div className="cta-row">
+            <a className="btn primary" href={`mailto:${site.email}`}>
+              {site.email}
+            </a>
+            <a className="btn" href="/resume.pdf">
+              Resume (PDF)
+            </a>
+            <a className="btn" href={site.linkedin}>
+              LinkedIn
+            </a>
+          </div>
+        </section>
+      </div>
     </>
   );
 }
