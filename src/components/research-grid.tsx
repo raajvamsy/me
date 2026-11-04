@@ -3,7 +3,6 @@ import Link from "next/link";
 import { hasMedia } from "@/components/media";
 import type { ResearchPage } from "@/lib/research";
 
-const sizes = ["t-wide", "", "", "t-wide", "t-half", "t-half"];
 
 export function PageHero({
   title,
@@ -44,7 +43,7 @@ export function ResearchGrid({ pages }: { pages: (ResearchPage & { href: string;
       {pages.map((page, index) => {
         const image = `/img/research/${page.line}/${page.slug}.webp`;
         return (
-          <Link key={page.href} href={page.href} className={`tile ${sizes[index % sizes.length]}`}>
+          <Link key={page.href} href={page.href} className="tile">
             <div className="tile-top label">
               <span>
                 <b>{String(index + 1).padStart(2, "0")}</b> / {page.tag}

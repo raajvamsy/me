@@ -30,8 +30,6 @@ function Visual({ slug }: { slug: string }) {
   );
 }
 
-// The rhythm repeats so that a new project gets a sensible tile without layout work.
-const sizes = ["t-wide", "", "", "t-wide", "t-half", "t-half", ""];
 
 export function WorkGrid({ entries }: { entries: Entry[] }) {
   return (
@@ -40,7 +38,7 @@ export function WorkGrid({ entries }: { entries: Entry[] }) {
         <Link
           key={entry.slug}
           href={`/work/${entry.slug}`}
-          className={`tile ${sizes[index % sizes.length]}`}
+          className="tile"
         >
           <div className="tile-top label">
             <span>
